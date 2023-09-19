@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">HistoryAR</string>
+    <string name="title_home">Inicio</string>
+    <string name="title_map">Mapa</string>
+    <string name="title_profile">Perfil</string>
+    <string name="title_dashboard">Panel de administrador</string>
+    <string name="title_login">Comienza el viaje</string>
+    <string name="subtitle_login">Inicia sesión con tu cuenta de Google para comenzar a usar la aplicación</string>
+    <string name="btn_login">Iniciar sesión</string>
+    <string name="btn_logout">Cerrar sesión</string>
+</resources>
