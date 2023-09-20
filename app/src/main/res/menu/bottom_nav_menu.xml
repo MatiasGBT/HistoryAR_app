@@ -7,11 +7,6 @@
         android:title="@string/title_home" />
 
     <item
-        android:id="@+id/navigation_map"
-        android:icon="@drawable/ic_round_map_24"
-        android:title="@string/title_map" />
-
-    <item
         android:id="@+id/navigation_profile"
         android:icon="@drawable/ic_round_person_24"
         android:title="@string/title_profile" />

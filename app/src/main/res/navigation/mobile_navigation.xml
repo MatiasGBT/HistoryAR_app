@@ -12,12 +12,6 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_map"
-        android:name="com.grupo3.historyar.ui.map.MapFragment"
-        android:label="@string/title_map"
-        tools:layout="@layout/fragment_map" />
-
-    <fragment
         android:id="@+id/navigation_profile"
         android:name="com.grupo3.historyar.ui.profile.ProfileFragment"
         android:label="@string/title_profile"
