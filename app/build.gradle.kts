@@ -44,21 +44,21 @@ android {
 
 dependencies {
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
-    val fragmentVersion = "2.7.2"
+    val fragmentVersion = "2.7.6"
     val lifecycleVersion = "2.6.2"
     val retrofitVersion = "2.9.0"
     val hiltVersion = "2.48"
-    val roomVersion = "2.5.2"
+    val roomVersion = "2.6.1"
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.9.0")
+    implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.navigation:navigation-fragment-ktx:${fragmentVersion}")
     implementation("androidx.navigation:navigation-ui-ktx:${fragmentVersion}")
-    implementation("androidx.fragment:fragment-ktx:1.6.1")
-    implementation("androidx.activity:activity-ktx:1.7.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+    implementation("androidx.fragment:fragment-ktx:1.6.2")
+    implementation("androidx.activity:activity-ktx:1.8.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
     implementation ("androidx.datastore:datastore-preferences:1.0.0")
 
     //ViewModel
@@ -81,6 +81,9 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.2.3"))
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.android.gms:play-services-auth:20.7.0")
+
+    //Picasso
+    implementation("com.squareup.picasso:picasso:2.8")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

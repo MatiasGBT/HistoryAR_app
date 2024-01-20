@@ -1,9 +1,8 @@
-package com.grupo3.historyar.ui
+package com.grupo3.historyar.ui.view_models
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.FirebaseAuth
 import com.grupo3.historyar.data.database.entities.UserEntity
 import com.grupo3.historyar.data.repositories.UserRepository
 import com.grupo3.historyar.models.User

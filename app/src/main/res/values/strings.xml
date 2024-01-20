@@ -6,5 +6,18 @@
     <string name="title_login">Comienza el viaje</string>
     <string name="subtitle_login">Inicia sesión con tu cuenta de Google para comenzar a usar la aplicación</string>
     <string name="btn_login">Iniciar sesión</string>
+
+    <!--Home-->
+    <string name="home_close_experiences">Experiencias cerca tuyo</string>
+    <string name="home_btn_more_experiences">Ver todas las experiencias</string>
+
+    <!--Profile-->
+    <string name="profile_tour">Recorrido destacado</string>
+    <string name="profile_preferences">Preferencias</string>
+    <string name="profile_account">Cuenta</string>
     <string name="btn_logout">Cerrar sesión</string>
+    <string name="btn_delete_account">Dar de baja</string>
+
+    <!--Accesibility-->
+    <string name="cd_account_image">Imagen del perfil</string>
 </resources>

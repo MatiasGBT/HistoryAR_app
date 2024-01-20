@@ -5,36 +5,41 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.add
+import androidx.fragment.app.commit
+import androidx.lifecycle.Observer
 import com.google.firebase.auth.FirebaseAuth
 import com.grupo3.historyar.databinding.FragmentProfileBinding
 import com.grupo3.historyar.ui.LoginActivity
-import com.grupo3.historyar.ui.UserViewModel
+import com.grupo3.historyar.ui.tour_mini.ID_BUNDLE
+import com.grupo3.historyar.ui.tour_mini.TourMiniFragment
+import com.grupo3.historyar.ui.view_models.UserViewModel
 import com.grupo3.historyar.ui.view_models.PreferencesViewModel
+import com.grupo3.historyar.ui.view_models.TourViewModel
 
 
 class ProfileFragment() : Fragment() {
     private val preferencesViewModel: PreferencesViewModel by activityViewModels()
     private val userViewModel: UserViewModel by activityViewModels()
+    private val tourViewModel: TourViewModel by activityViewModels()
     private lateinit var auth : FirebaseAuth
+    private var _binding: FragmentProfileBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val profileViewModel =
-            ViewModelProvider(this).get(ProfileViewModel::class.java)
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         auth = FirebaseAuth.getInstance()
         initUI()
         return binding.root
     }
-
-    private var _binding: FragmentProfileBinding? = null
-    private val binding get() = _binding!!
 
     private fun initUI() {
         binding.switchDarkMode.isChecked = preferencesViewModel.darkModeSwitchMustBeEnabled
@@ -46,11 +51,23 @@ class ProfileFragment() : Fragment() {
             userViewModel.deleteUser()
             startActivity(Intent(this.activity, LoginActivity::class.java))
         }
+        initFavoriteTourFragment()
+    }
+
+    private fun initFavoriteTourFragment() {
+        tourViewModel.isLoading.observe(viewLifecycleOwner, Observer {
+            binding.pbTour.isVisible = it
+            binding.fcFavoriteTour.isVisible = !it
+        })
+        val bundle = bundleOf(ID_BUNDLE to "1") //Se debe pasar el ID deseado. Debo obtener el ID por el favoriteTour del user
+        childFragmentManager.commit {
+            setReorderingAllowed(true)
+            add<TourMiniFragment>(binding.fcFavoriteTour.id, args = bundle)
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
 }

@@ -3,8 +3,10 @@
     <color name="background">#ffffff</color>
     <color name="nav_background">#E4E4E4</color>
     <color name="text">#242424</color>
+    <color name="textSecondary">#B3000000</color>
     <color name="btn_text">#ffffff</color>
     <color name="primary">#2e58ff</color>
     <color name="secondary_dark">#0f2680</color>
     <color name="secondary_light">#7689d6</color>
+    <color name="negative">#E33629</color>
 </resources>

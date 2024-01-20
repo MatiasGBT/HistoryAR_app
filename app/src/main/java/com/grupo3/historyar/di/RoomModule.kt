@@ -23,4 +23,8 @@ object RoomModule {
     @Singleton
     @Provides
     fun provideUserDao(db: HistoryARDatabase) = db.getUserDao()
+
+    @Singleton
+    @Provides
+    fun provideTourDao(db: HistoryARDatabase) = db.getTourDao()
 }

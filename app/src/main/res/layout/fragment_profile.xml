@@ -7,47 +7,139 @@
     tools:context=".ui.profile.ProfileFragment">
 
     <ScrollView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp"
+            app:cardUseCompatPadding="true" >
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/switchDarkMode"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_round_dark_mode_24"
-                android:drawableTint="@color/text"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
-                android:id="@+id/btnLogout"
-                style="@style/button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_round_logout_24"
-                android:text="@string/btn_logout"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/switchDarkMode" />
-
-            <View
-                android:id="@+id/test"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="1500dp"
-                android:background="@color/primary"
-                app:layout_constraintTop_toBottomOf="@id/btnLogout" />
+                android:layout_height="wrap_content"
+                android:background="@color/nav_background"
+                android:padding="24dp">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:background="@color/secondary_dark"
-                app:layout_constraintTop_toBottomOf="@id/test" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/clAccountData"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:paddingBottom="12dp">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/ivAccountImage"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:scaleType="centerCrop"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:contentDescription="@string/cd_account_image"
+                        android:src="@drawable/ic_launcher_background"
+                        app:shapeAppearanceOverlay="@style/ivAccountImage" />
+
+                    <TextView
+                        android:id="@+id/tvUsername"
+                        style="@style/profile_name"
+                        android:layout_width="175dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/ivAccountImage"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="Nombre de usuario"
+                        android:text="Cosme Fulanito" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:id="@+id/tvTour"
+                    style="@style/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/profile_tour"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/clAccountData"/>
+
+                <ProgressBar
+                    android:id="@+id/pbTour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toTopOf="@id/fcFavoriteTour"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvTour" />
+
+                <androidx.fragment.app.FragmentContainerView
+                    android:id="@+id/fcFavoriteTour"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toTopOf="@+id/tvPreferences"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvTour" />
+
+                <TextView
+                    android:id="@+id/tvPreferences"
+                    style="@style/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/profile_preferences"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/fcFavoriteTour"/>
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/switchDarkMode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_round_dark_mode_24"
+                    android:drawableTint="@color/text"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvPreferences"
+                    android:drawablePadding="8dp"/>
+
+                <TextView
+                    android:id="@+id/tvAccount"
+                    style="@style/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/profile_account"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/switchDarkMode"/>
+
+                <Button
+                    android:id="@+id/btnLogout"
+                    style="@style/button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_round_logout_24"
+                    android:text="@string/btn_logout"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvAccount" />
+
+                <Button
+                    android:id="@+id/btnDeleteAccount"
+                    style="@style/button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/negative"
+                    android:drawableLeft="@drawable/ic_round_unsubscribe_24"
+                    android:text="@string/btn_delete_account"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btnLogout" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
     </ScrollView>
 
 

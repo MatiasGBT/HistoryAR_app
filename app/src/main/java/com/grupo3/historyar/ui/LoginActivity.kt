@@ -3,7 +3,6 @@ package com.grupo3.historyar.ui
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -18,6 +17,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.grupo3.historyar.R
 import com.grupo3.historyar.data.database.entities.toDatabase
 import com.grupo3.historyar.databinding.ActivityLoginBinding
+import com.grupo3.historyar.ui.view_models.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -44,7 +44,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        this.moveTaskToBack(true);
+        this.moveTaskToBack(true)
     }
 
     private fun initUI() {

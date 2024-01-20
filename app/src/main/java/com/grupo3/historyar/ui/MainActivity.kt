@@ -5,12 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.app.*
 import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.booleanPreferencesKey
-import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -20,10 +17,8 @@ import com.grupo3.historyar.databinding.ActivityMainBinding
 import com.grupo3.historyar.models.PreferencesModel
 import com.grupo3.historyar.ui.view_models.PreferencesViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "app_preferences")
@@ -44,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         auth = FirebaseAuth.getInstance()
         initDarkMode()
-        if (isUserLoggedIn()) {
+        if (!isUserLoggedIn()) {
             initActionBar()
             initNavbar()
             observeDarkMode()
@@ -99,11 +94,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun enableDarkMode() {
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        runOnUiThread {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        }
     }
 
     private fun disableDarkMode() {
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        runOnUiThread {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
     }
 
     private fun observeDarkMode() {

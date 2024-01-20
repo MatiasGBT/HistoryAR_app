@@ -17,10 +17,4 @@
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" />
 
-    <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.grupo3.historyar.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
-
 </navigation>

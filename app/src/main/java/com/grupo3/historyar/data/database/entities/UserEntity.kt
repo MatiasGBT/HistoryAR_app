@@ -10,7 +10,7 @@ import com.grupo3.historyar.models.User
 data class UserEntity(
     @PrimaryKey(autoGenerate = false) val id: String,
     @ColumnInfo(name = "photo") val photo: String,
-    @ColumnInfo(name = "full_name") val fullName: String,
+    @ColumnInfo(name = "full_name") val fullName: String
 )
 
 fun User.toDatabase() = UserEntity(id = id, photo = photo, fullName = fullName)

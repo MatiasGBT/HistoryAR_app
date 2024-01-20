@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".ui.tour_big.TourBigFragment">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="2dp"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/nav_background"
+            android:gravity="start">
+
+            <ImageView
+                android:id="@+id/ivTourImage"
+                android:layout_width="match_parent"
+                android:layout_height="125dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_launcher_background"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/ivPlayIcon"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/border_background"
+                android:src="@drawable/ic_round_play_arrow_36"
+                app:layout_constraintBottom_toBottomOf="@+id/ivTourImage"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/ivTourImage"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/text" />
+
+            <ImageView
+                android:id="@+id/ivStarIcon"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/border_background"
+                android:src="@drawable/ic_round_star_border_24"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/text" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                app:layout_constraintTop_toBottomOf="@+id/ivTourImage">
+
+                <TextView
+                    android:id="@+id/tvTourName"
+                    style="@style/minitour_title"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Revolución de mayo" />
+
+                <TextView
+                    android:id="@+id/tvTourDistance"
+                    style="@style/bigtour_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_round_location_on_16"
+                    android:drawablePadding="4dp"
+                    app:drawableTint="@color/textSecondary"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvTourName"
+                    tools:text="450m" />
+
+                <TextView
+                    android:id="@+id/tvTourDuration"
+                    style="@style/bigtour_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_round_access_time_16"
+                    android:drawablePadding="4dp"
+                    app:drawableTint="@color/textSecondary"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvTourDistance"
+                    tools:text="25 minutos" />
+
+                <TextView
+                    android:id="@+id/tvTourDescription"
+                    style="@style/minitour_subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="4dp"
+                    app:drawableTint="@color/text"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvTourDuration"
+                    tools:text="Reviví el momento en el que Argentina se volvió un país soberano." />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
