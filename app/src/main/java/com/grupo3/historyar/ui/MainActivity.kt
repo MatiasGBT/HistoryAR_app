@@ -27,6 +27,7 @@ val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "ap
 class MainActivity : AppCompatActivity() {
     companion object {
         const val KEY_DARK_MODE = "key_dark_mode"
+        const val KEY_HOME_SWIPE = "key_home_swipe"
     }
 
     private lateinit var binding: ActivityMainBinding
@@ -39,6 +40,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         auth = FirebaseAuth.getInstance()
         initDarkMode()
+        initHomeSwipe()
         if (!isUserLoggedIn()) {
             initActionBar()
             initNavbar()
@@ -78,10 +80,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun initHomeSwipe() {
+        CoroutineScope(Dispatchers.IO).launch {
+            getPreferences().collect { preferencesModel ->
+                preferencesViewModel.homeSwipeMustBeVisible = preferencesModel.homeSwipe
+            }
+        }
+    }
+
     private fun getPreferences(): Flow<PreferencesModel> {
         return dataStore.data.map { preferences ->
             PreferencesModel(
-                darkMode = preferences[booleanPreferencesKey(KEY_DARK_MODE)] ?: false
+                darkMode = preferences[booleanPreferencesKey(KEY_DARK_MODE)] ?: false,
+                homeSwipe = preferences[booleanPreferencesKey(KEY_HOME_SWIPE)] ?: true
             )
         }
     }
@@ -117,6 +128,12 @@ class MainActivity : AppCompatActivity() {
     private suspend fun saveDarkModeSetting(isDarkModeEnabled: Boolean) {
         dataStore.edit { preferences ->
             preferences[booleanPreferencesKey(KEY_DARK_MODE)] = isDarkModeEnabled
+        }
+    }
+
+    private suspend fun disableHomeSwipeSetting() {
+        dataStore.edit { preferences ->
+            preferences[booleanPreferencesKey(KEY_HOME_SWIPE)] = false
         }
     }
 }
