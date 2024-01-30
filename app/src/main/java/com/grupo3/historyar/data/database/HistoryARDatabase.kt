@@ -1,5 +1,6 @@
 package com.grupo3.historyar.data.database
 
+import android.app.Application
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.grupo3.historyar.data.database.dao.TourDao

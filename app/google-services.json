@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "637198735389-2suuhegfutm0go6gmv6r15kh8an0pfcd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.grupo3.historyar",
+            "certificate_hash": "eb3436e504dd572fa8f363d56c7fd427aee89a31"
+          }
+        },
+        {
           "client_id": "637198735389-n3aksl3b6483gli7uvchem5j1vdmsgkd.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -22,7 +30,7 @@
           }
         },
         {
-          "client_id": "637198735389-g6fo8cn9kjif66hdcrm6prrtqkgesej2.apps.googleusercontent.com",
+          "client_id": "637198735389-n4nf1ubncmnki1936ug7grahcpp3u8o6.apps.googleusercontent.com",
           "client_type": 3
         }
       ],

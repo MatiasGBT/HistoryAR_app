@@ -45,7 +45,7 @@ android {
 dependencies {
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
     val fragmentVersion = "2.7.6"
-    val lifecycleVersion = "2.6.2"
+    val lifecycleVersion = "2.7.0"
     val retrofitVersion = "2.9.0"
     val hiltVersion = "2.48"
     val roomVersion = "2.6.1"

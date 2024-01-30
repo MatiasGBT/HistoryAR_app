@@ -9,10 +9,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.grupo3.historyar.adapters.CloseExperiencesAdapter
 import com.grupo3.historyar.databinding.FragmentHomeBinding
 import com.grupo3.historyar.ui.view_models.PreferencesViewModel
 import com.grupo3.historyar.ui.view_models.TourViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
     private val preferencesViewModel: PreferencesViewModel by activityViewModels()
@@ -39,7 +43,7 @@ class HomeFragment : Fragment() {
         initCloseExperiencesAdapter()
         observeCloseExperiencesMutableData()
         tourViewModel.getCloseExperiences()
-        binding.gviSwipe.isVisible = preferencesViewModel.homeSwipeMustBeVisible
+        initHomeSwipeGif()
     }
 
     private fun initCloseExperiencesAdapter() {
@@ -58,6 +62,26 @@ class HomeFragment : Fragment() {
         tourViewModel.closeExperiencesModel.observe(viewLifecycleOwner, Observer {
             closeExperiencesAdapter.updateList(it)
         })
+    }
+
+    private fun initHomeSwipeGif() {
+        observeHomeSwipe()
+        binding.rvCloseExperiences.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (dx > 0 && binding.gviSwipe.isVisible) {
+                    binding.gviSwipe.isVisible = false
+                    CoroutineScope(Dispatchers.IO).launch {
+                        preferencesViewModel.saveHomeSwipeSetting(false)
+                    }
+                }
+            }
+        })
+    }
+
+    private fun observeHomeSwipe() {
+        preferencesViewModel.isHomeSwipeVisible.observe(viewLifecycleOwner) {
+            binding.gviSwipe.isVisible = it
+        }
     }
 
     private fun navigateToTourDetail(id: String) {

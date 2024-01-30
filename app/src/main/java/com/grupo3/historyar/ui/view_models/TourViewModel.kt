@@ -1,9 +1,9 @@
 package com.grupo3.historyar.ui.view_models
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.grupo3.historyar.data.repositories.PreferencesRepository
 import com.grupo3.historyar.data.repositories.TourRepository
 import com.grupo3.historyar.models.Tour
 import dagger.hilt.android.lifecycle.HiltViewModel

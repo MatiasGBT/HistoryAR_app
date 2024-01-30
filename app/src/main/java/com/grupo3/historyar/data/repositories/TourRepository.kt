@@ -1,6 +1,5 @@
 package com.grupo3.historyar.data.repositories
 
-import android.util.Log
 import com.grupo3.historyar.data.database.dao.TourDao
 import com.grupo3.historyar.data.database.entities.TourEntity
 import com.grupo3.historyar.models.Tour

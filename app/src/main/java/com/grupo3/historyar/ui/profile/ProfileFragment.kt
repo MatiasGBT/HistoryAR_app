@@ -20,6 +20,10 @@ import com.grupo3.historyar.ui.tour_mini.TourMiniFragment
 import com.grupo3.historyar.ui.view_models.UserViewModel
 import com.grupo3.historyar.ui.view_models.PreferencesViewModel
 import com.grupo3.historyar.ui.view_models.TourViewModel
+import com.squareup.picasso.Picasso
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class ProfileFragment() : Fragment() {
@@ -45,13 +49,25 @@ class ProfileFragment() : Fragment() {
         binding.switchDarkMode.isChecked = preferencesViewModel.darkModeSwitchMustBeEnabled
         binding.switchDarkMode.setOnCheckedChangeListener { _, value ->
             preferencesViewModel.toggleDarkMode(value)
+            CoroutineScope(Dispatchers.IO).launch {
+                preferencesViewModel.saveDarkModeSetting(value)
+            }
         }
         binding.btnLogout.setOnClickListener {
             auth.signOut()
             userViewModel.deleteUser()
             startActivity(Intent(this.activity, LoginActivity::class.java))
         }
+        initUser()
         initFavoriteTourFragment()
+    }
+
+    private fun initUser() {
+        userViewModel.userModel.observe(viewLifecycleOwner, Observer {
+            Picasso.get().load(it.photo).into(binding.ivAccountImage)
+            binding.tvUsername.text = it.fullName
+        })
+        userViewModel.getUserLoggedIn()
     }
 
     private fun initFavoriteTourFragment() {

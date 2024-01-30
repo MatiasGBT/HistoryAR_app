@@ -14,37 +14,27 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.grupo3.historyar.R
 import com.grupo3.historyar.databinding.ActivityMainBinding
-import com.grupo3.historyar.models.PreferencesModel
 import com.grupo3.historyar.ui.view_models.PreferencesViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "app_preferences")
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    companion object {
-        const val KEY_DARK_MODE = "key_dark_mode"
-        const val KEY_HOME_SWIPE = "key_home_swipe"
-    }
-
     private lateinit var binding: ActivityMainBinding
     private val preferencesViewModel: PreferencesViewModel by viewModels()
-    private lateinit var auth : FirebaseAuth
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         auth = FirebaseAuth.getInstance()
-        initDarkMode()
-        initHomeSwipe()
-        if (!isUserLoggedIn()) {
+        observeDarkMode()
+        preferencesViewModel.initPreferences()
+        if (isUserLoggedIn()) {
             initActionBar()
             initNavbar()
-            observeDarkMode()
         } else {
             navigateToLoginActivity()
         }
@@ -71,29 +61,9 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
     }
 
-    private fun initDarkMode() {
-        CoroutineScope(Dispatchers.IO).launch {
-            getPreferences().collect { preferencesModel ->
-                toggleDarkMode(preferencesModel.darkMode)
-                preferencesViewModel.darkModeSwitchMustBeEnabled = preferencesModel.darkMode
-            }
-        }
-    }
-
-    private fun initHomeSwipe() {
-        CoroutineScope(Dispatchers.IO).launch {
-            getPreferences().collect { preferencesModel ->
-                preferencesViewModel.homeSwipeMustBeVisible = preferencesModel.homeSwipe
-            }
-        }
-    }
-
-    private fun getPreferences(): Flow<PreferencesModel> {
-        return dataStore.data.map { preferences ->
-            PreferencesModel(
-                darkMode = preferences[booleanPreferencesKey(KEY_DARK_MODE)] ?: false,
-                homeSwipe = preferences[booleanPreferencesKey(KEY_HOME_SWIPE)] ?: true
-            )
+    private fun observeDarkMode() {
+        preferencesViewModel.isDarkModeEnabled.observe(this) {
+            toggleDarkMode(it)
         }
     }
 
@@ -116,24 +86,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun observeDarkMode() {
-        preferencesViewModel.isDarkModeEnabled.observe(this) { isDarkModeEnabled ->
-            toggleDarkMode(isDarkModeEnabled)
-            CoroutineScope(Dispatchers.IO).launch {
-                saveDarkModeSetting(isDarkModeEnabled)
-            }
-        }
-    }
-
     private suspend fun saveDarkModeSetting(isDarkModeEnabled: Boolean) {
-        dataStore.edit { preferences ->
-            preferences[booleanPreferencesKey(KEY_DARK_MODE)] = isDarkModeEnabled
-        }
-    }
-
-    private suspend fun disableHomeSwipeSetting() {
-        dataStore.edit { preferences ->
-            preferences[booleanPreferencesKey(KEY_HOME_SWIPE)] = false
-        }
+        preferencesViewModel.saveDarkModeSetting(isDarkModeEnabled)
     }
 }

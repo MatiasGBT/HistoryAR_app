@@ -3,6 +3,7 @@ package com.grupo3.historyar.ui
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -76,6 +77,7 @@ class LoginActivity : AppCompatActivity() {
         val credential = GoogleAuthProvider.getCredential(account.idToken , null)
         auth.signInWithCredential(credential).addOnCompleteListener {
             if (it.isSuccessful) {
+                Log.i("test","account: " + account.toDatabase().toString())
                 saveUser(account)
                 navigateToMainActivity()
             } else {
