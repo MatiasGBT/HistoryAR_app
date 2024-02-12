@@ -1,5 +1,6 @@
 package com.grupo3.historyar.di
 
+import com.grupo3.historyar.data.network.api.clients.TourApiClient
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -12,7 +13,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
-    /*@Singleton
+    @Singleton
     @Provides
     fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
@@ -23,7 +24,7 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideQuoteApiClient(retrofit: Retrofit): QuoteApiClient {
-        return retrofit.create(QuoteApiClient::class.java)
-    }*/
+    fun provideTourApiClient(retrofit: Retrofit): TourApiClient {
+        return retrofit.create(TourApiClient::class.java)
+    }
 }

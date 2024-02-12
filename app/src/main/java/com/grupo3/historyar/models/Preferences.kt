@@ -1,6 +1,6 @@
 package com.grupo3.historyar.models
 
-data class PreferencesModel(
+data class Preferences(
     var darkMode: Boolean,
     var homeSwipe: Boolean
 )

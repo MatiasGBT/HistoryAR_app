@@ -71,7 +71,7 @@ class ProfileFragment() : Fragment() {
     }
 
     private fun initFavoriteTourFragment() {
-        tourViewModel.isLoading.observe(viewLifecycleOwner, Observer {
+        tourViewModel.tourIsLoading.observe(viewLifecycleOwner, Observer {
             binding.pbTour.isVisible = it
             binding.fcFavoriteTour.isVisible = !it
         })

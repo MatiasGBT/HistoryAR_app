@@ -10,6 +10,9 @@
     <!--Home-->
     <string name="home_close_experiences">Experiencias cerca tuyo</string>
     <string name="home_btn_more_experiences">Ver todas las experiencias</string>
+    <string name="home_previous_experiences">Tus viajes por la historia</string>
+    <string name="home_btn_sub">Suscribirme por $100 ARS</string>
+    <string name="home_btn_support">Necesito ayuda</string>
 
     <!--Profile-->
     <string name="profile_tour">Recorrido destacado</string>

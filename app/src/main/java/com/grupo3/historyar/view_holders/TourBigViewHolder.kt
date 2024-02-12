@@ -7,12 +7,12 @@ import com.grupo3.historyar.databinding.FragmentTourBigBinding
 import com.grupo3.historyar.models.Tour
 import com.squareup.picasso.Picasso
 
-class CloseExperiencesViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+class TourBigViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     private val binding = FragmentTourBigBinding.bind(view)
 
-    fun bind(tour: Tour, onItemSelected: (String) -> Unit) {
+    fun bind(tour: Tour, onItemInfoSelected: (String) -> Unit) {
         binding.tvTourName.text = tour.name
-        binding.tvTourDistance.text = "450m"
+        binding.tvTourDistance.text = tour.duration.toString() + "m"
         binding.tvTourDuration.text = tour.duration.toString() + " minutos"
         binding.tvTourDescription.text = tour.description
         Picasso.get().load(tour.image).into(binding.ivTourImage)
@@ -22,7 +22,8 @@ class CloseExperiencesViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             binding.ivStarIcon.setImageResource(R.drawable.ic_round_star_border_24)
         }
 
-        binding.ivTourImage.setOnClickListener{onItemSelected(tour.id)}
-        binding.ivPlayIcon.setOnClickListener{onItemSelected(tour.id)}
+        binding.ivTourImage.setOnClickListener{}
+        binding.ivPlayIcon.setOnClickListener{}
+        binding.clTourInfo.setOnClickListener{onItemInfoSelected(tour.id)}
     }
 }

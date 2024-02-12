@@ -7,14 +7,15 @@ import com.grupo3.historyar.R
 import com.grupo3.historyar.models.Tour
 import com.grupo3.historyar.view_holders.TourBigViewHolder
 
-class CloseExperiencesAdapter(
+class TourListAdapter(
     private var tourList: List<Tour> = emptyList(),
     private val onItemSelected: (String) -> Unit
 ) : RecyclerView.Adapter<TourBigViewHolder>() {
 
     fun updateList(tourList: List<Tour>) {
+        //TODO: Modificar notifyDataSetChanged() para optimizar el código ya que esta lista puede ser larga
         this.tourList = tourList
-        notifyDataSetChanged() //No es necesario notificar por posición ya que la lista va a ser pequeña
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TourBigViewHolder {

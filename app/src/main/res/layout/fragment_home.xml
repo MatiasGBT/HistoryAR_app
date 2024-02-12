@@ -8,8 +8,10 @@
     tools:context=".ui.home.HomeFragment">
 
     <ScrollView
+        android:id="@+id/svHome"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:scrollbars="none"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -46,8 +48,8 @@
                 android:id="@+id/gviSwipe"
                 android:layout_width="90dp"
                 android:layout_height="90dp"
-                android:translationZ="10dp"
                 android:src="@drawable/home_swipe"
+                android:translationZ="10dp"
                 app:layout_constraintBottom_toBottomOf="@+id/rvCloseExperiences"
                 app:layout_constraintEnd_toEndOf="@+id/rvCloseExperiences"
                 app:layout_constraintStart_toStartOf="@+id/rvCloseExperiences"
@@ -70,6 +72,73 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rvCloseExperiences" />
+
+            <TextView
+                android:id="@+id/tvPreviousExperiences"
+                style="@style/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/home_previous_experiences"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btnMoreExperiences" />
+
+            <ProgressBar
+                android:id="@+id/pbPreviousExperiences"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvPreviousExperiences" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvPreviousExperiences"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvPreviousExperiences" />
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/fcSub"
+                android:name="com.grupo3.historyar.ui.subscription.SubscriptionFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rvPreviousExperiences" />
+
+            <ImageView
+                android:id="@+id/ivSupport"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/border_background"
+                android:padding="12dp"
+                android:src="@drawable/ic_round_support_agent_36"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fcSub"
+                app:tint="@color/primary" />
+
+            <Button
+                android:id="@+id/btnSupport"
+                style="@style/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/home_btn_support"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ivSupport" />
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                app:layout_constraintTop_toBottomOf="@+id/btnSupport" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

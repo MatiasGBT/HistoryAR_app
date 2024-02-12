@@ -57,6 +57,7 @@
                 app:tint="@color/text" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clTourInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="4dp"

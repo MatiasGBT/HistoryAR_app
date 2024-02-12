@@ -5,21 +5,21 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.grupo3.historyar.R
 import com.grupo3.historyar.models.Tour
-import com.grupo3.historyar.view_holders.TourBigViewHolder
+import com.grupo3.historyar.view_holders.TourMiniViewHolder
 
-class CloseExperiencesAdapter(
+class PreviousExperiencesAdapter(
     private var tourList: List<Tour> = emptyList(),
     private val onItemSelected: (String) -> Unit
-) : RecyclerView.Adapter<TourBigViewHolder>() {
+) : RecyclerView.Adapter<TourMiniViewHolder>() {
 
     fun updateList(tourList: List<Tour>) {
         this.tourList = tourList
         notifyDataSetChanged() //No es necesario notificar por posición ya que la lista va a ser pequeña
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TourBigViewHolder {
-        return TourBigViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.fragment_tour_big, parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TourMiniViewHolder {
+        return TourMiniViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.fragment_tour_mini, parent, false)
         )
     }
 
@@ -27,7 +27,7 @@ class CloseExperiencesAdapter(
         return tourList.size
     }
 
-    override fun onBindViewHolder(holder: TourBigViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: TourMiniViewHolder, position: Int) {
         holder.bind(tourList[position], onItemSelected)
     }
 }

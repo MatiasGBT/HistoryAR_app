@@ -9,12 +9,34 @@
         android:id="@+id/navigation_home"
         android:name="com.grupo3.historyar.ui.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_tourListFragment"
+            app:destination="@id/tourListFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_tourDetail"
+            app:destination="@id/tourDetail" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_profile"
         android:name="com.grupo3.historyar.ui.profile.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/tourListFragment"
+        android:name="com.grupo3.historyar.ui.tour_list.TourListFragment"
+        android:label="fragment_tour_list"
+        tools:layout="@layout/fragment_tour_list" >
+        <action
+            android:id="@+id/action_tourListFragment_to_tourDetail"
+            app:destination="@id/tourDetail" />
+    </fragment>
+    <fragment
+        android:id="@+id/tourDetail"
+        android:name="com.grupo3.historyar.ui.tour_detail.TourDetail"
+        android:label="fragment_tour_detail"
+        tools:layout="@layout/fragment_tour_detail" />
 
 </navigation>
