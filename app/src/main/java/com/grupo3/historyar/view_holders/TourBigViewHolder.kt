@@ -12,7 +12,7 @@ class TourBigViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     fun bind(tour: Tour, onItemInfoSelected: (String) -> Unit) {
         binding.tvTourName.text = tour.name
-        binding.tvTourDistance.text = tour.duration.toString() + "m"
+        binding.tvTourDistance.text = "50m" //TODO: Obtener ubicación a tiempo real y comparar con coordenadas
         binding.tvTourDuration.text = tour.duration.toString() + " minutos"
         binding.tvTourDescription.text = tour.description
         Picasso.get().load(tour.image).into(binding.ivTourImage)

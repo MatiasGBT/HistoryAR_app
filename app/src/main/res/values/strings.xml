@@ -21,6 +21,15 @@
     <string name="btn_logout">Cerrar sesión</string>
     <string name="btn_delete_account">Dar de baja</string>
 
+    <!--Tour detail-->
+    <string name="tour_detail_comment_title">Comentarios y calificaciones</string>
+    <string name="tour_detail_qualification_dialog_hint">Deja tu comentario acerca del recorrido</string>
+    <string name="tour_detail_qualification_dialog_btn">Calificar</string>
+
     <!--Accesibility-->
-    <string name="cd_account_image">Imagen del perfil</string>
+    <string name="acc_account_image">Imagen del perfil</string>
+    <string name="acc_comment_image">Imagen del perfil del autor del comentario</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -73,13 +73,13 @@ class HomeFragment : Fragment() {
     }
 
     private fun observeCloseExperiencesMutableData() {
-        tourViewModel.closeExperiencesAreLoading.observe(viewLifecycleOwner, Observer {
+        tourViewModel.closeExperiencesAreLoading.observe(viewLifecycleOwner) {
             binding.pbCloseExperiences.isVisible = it
             binding.rvCloseExperiences.isVisible = !it
-        })
-        tourViewModel.closeExperiencesModel.observe(viewLifecycleOwner, Observer {
+        }
+        tourViewModel.closeExperiencesModel.observe(viewLifecycleOwner) {
             closeExperiencesAdapter.updateList(it)
-        })
+        }
     }
 
     private fun initHomeSwipeGif() {

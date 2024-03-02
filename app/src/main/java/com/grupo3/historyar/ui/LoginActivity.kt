@@ -77,7 +77,6 @@ class LoginActivity : AppCompatActivity() {
         val credential = GoogleAuthProvider.getCredential(account.idToken , null)
         auth.signInWithCredential(credential).addOnCompleteListener {
             if (it.isSuccessful) {
-                Log.i("test","account: " + account.toDatabase().toString())
                 saveUser(account)
                 navigateToMainActivity()
             } else {

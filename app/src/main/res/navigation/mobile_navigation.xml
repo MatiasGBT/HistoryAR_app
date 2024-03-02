@@ -37,6 +37,15 @@
         android:id="@+id/tourDetail"
         android:name="com.grupo3.historyar.ui.tour_detail.TourDetail"
         android:label="fragment_tour_detail"
-        tools:layout="@layout/fragment_tour_detail" />
+        tools:layout="@layout/fragment_tour_detail" >
+        <action
+            android:id="@+id/action_tourDetail_to_tourPlayFragment"
+            app:destination="@id/tourPlayFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/tourPlayFragment"
+        android:name="com.grupo3.historyar.ui.tour_play.TourPlayFragment"
+        android:label="fragment_tour_play"
+        tools:layout="@layout/fragment_tour_play" />
 
 </navigation>

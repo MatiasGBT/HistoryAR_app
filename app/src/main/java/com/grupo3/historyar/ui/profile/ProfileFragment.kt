@@ -63,19 +63,21 @@ class ProfileFragment() : Fragment() {
     }
 
     private fun initUser() {
-        userViewModel.userModel.observe(viewLifecycleOwner, Observer {
+        userViewModel.userModel.observe(viewLifecycleOwner) {
             Picasso.get().load(it.photo).into(binding.ivAccountImage)
             binding.tvUsername.text = it.fullName
-        })
+        }
         userViewModel.getUserLoggedIn()
     }
 
     private fun initFavoriteTourFragment() {
-        tourViewModel.tourIsLoading.observe(viewLifecycleOwner, Observer {
+        tourViewModel.tourIsLoading.observe(viewLifecycleOwner) {
             binding.pbTour.isVisible = it
             binding.fcFavoriteTour.isVisible = !it
-        })
-        val bundle = bundleOf(ID_BUNDLE to "1") //Se debe pasar el ID deseado. Debo obtener el ID por el favoriteTour del user
+        }
+        //TODO: Enviar el ID por el favoriteTour del user
+        //TODO: Que el tour favorito sea clickeable
+        val bundle = bundleOf(ID_BUNDLE to "1")
         childFragmentManager.commit {
             setReorderingAllowed(true)
             add<TourMiniFragment>(binding.fcFavoriteTour.id, args = bundle)

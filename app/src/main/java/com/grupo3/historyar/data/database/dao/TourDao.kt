@@ -10,9 +10,6 @@ interface TourDao {
     @Query("SELECT * FROM tours WHERE id = :id")
     suspend fun getTourById(id: String): TourEntity?
 
-    @Query("SELECT * FROM tours LIMIT 5")
-    suspend fun getCloseExperiences(): List<TourEntity>?
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTour(tour: TourEntity)
 

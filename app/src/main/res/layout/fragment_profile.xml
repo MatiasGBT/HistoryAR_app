@@ -40,7 +40,7 @@
                         android:id="@+id/ivAccountImage"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:contentDescription="@string/cd_account_image"
+                        android:contentDescription="@string/acc_account_image"
                         android:scaleType="centerCrop"
                         android:src="@drawable/ic_launcher_background"
                         app:layout_constraintStart_toStartOf="parent"

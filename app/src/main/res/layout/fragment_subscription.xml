@@ -28,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="85dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_launcher_background"
+                android:src="@drawable/home_sub_img"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -38,14 +38,18 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/plus_jakarta_sans"
                 android:text="No tenés una suscripción activa"
-                android:textColor="#242424"
+                android:textColor="#ffffff"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/ivSubImage"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/ivSubImage"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="No tenés una suscripción activa" />
+                tools:text="No tenés una suscripción activa"
+                android:shadowColor="#000000"
+                android:shadowDx="2.5"
+                android:shadowDy="2.5"
+                android:shadowRadius="2.5"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

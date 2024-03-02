@@ -1,5 +1,7 @@
 package com.grupo3.historyar.di
 
+import com.grupo3.historyar.data.network.api.clients.QualificationApiClient
+import com.grupo3.historyar.data.network.api.clients.PointOfInterestApiClient
 import com.grupo3.historyar.data.network.api.clients.TourApiClient
 import dagger.Module
 import dagger.Provides
@@ -26,5 +28,17 @@ object NetworkModule {
     @Provides
     fun provideTourApiClient(retrofit: Retrofit): TourApiClient {
         return retrofit.create(TourApiClient::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun providePointOfInterestApiClient(retrofit: Retrofit): PointOfInterestApiClient {
+        return retrofit.create(PointOfInterestApiClient::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideCalificationApiClient(retrofit: Retrofit): QualificationApiClient {
+        return retrofit.create(QualificationApiClient::class.java)
     }
 }

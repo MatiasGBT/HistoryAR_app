@@ -27,4 +27,8 @@ object RoomModule {
     @Singleton
     @Provides
     fun provideTourDao(db: HistoryARDatabase) = db.getTourDao()
+
+    @Singleton
+    @Provides
+    fun providePointDao(db: HistoryARDatabase) = db.getPointDao()
 }
