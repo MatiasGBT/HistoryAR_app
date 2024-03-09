@@ -17,9 +17,9 @@ fun TourModel.toDatabase(isFavorite: Boolean) = TourEntity(
     name = name,
     description = description,
     duration = duration,
-    image = pointsOnInterest[0].image,
-    latitude = pointsOnInterest[0].latitude,
-    longitude = pointsOnInterest[0].longitude,
+    image = pointsOnInterest.first().image,
+    latitude = pointsOnInterest.first().latitude,
+    longitude = pointsOnInterest.first().longitude,
     isFavorite = isFavorite
 )
 
@@ -28,7 +28,8 @@ fun TourModel.toDomain(isFavorite: Boolean) = Tour(
     name = name,
     description = description,
     duration = duration,
-    image = pointsOnInterest[0].image,
-    pointsOfInterest = pointsOnInterest.map { it.toDomain() },
+    image = pointsOnInterest.first().image,
+    latitude = pointsOnInterest.first().latitude,
+    longitude = pointsOnInterest.first().longitude,
     isFavorite = isFavorite
 )

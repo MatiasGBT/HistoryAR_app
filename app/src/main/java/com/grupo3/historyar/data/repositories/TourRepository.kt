@@ -22,8 +22,8 @@ class TourRepository @Inject constructor(
                 "Reviví el momento en el que Argentina se volvió un país soberano.",
                 25,
                 "https://i.imgur.com/IGB1rxN.jpg",
-                "",
-                "",
+                "-34.611293",
+                "-58.398129",
                 true
             )
             saveTour(tourModel)
@@ -37,15 +37,15 @@ class TourRepository @Inject constructor(
         //val tourListModel = tourService.getCloseExperiences()
         //tourDao.insertTourList(tourListModel.toDatabase())
         //return tourListModel.map { it.toDomain() }
-        val tourListModel = listOf<TourEntity>(
+        val tourListModel = listOf(
             TourEntity(
                 "1",
                 "Revolución de Mayo",
                 "Reviví el momento en el que Argentina se volvió un país soberano.",
                 25,
                 "https://i.imgur.com/IGB1rxN.jpg",
-                "",
-                "",
+                "-34.611293",
+                "-58.398129",
                 true
             ),
             TourEntity(
@@ -54,8 +54,8 @@ class TourRepository @Inject constructor(
                 "Explora la construcción del obelisco, considerado ícono de Buenos Aires.",
                 10,
                 "https://i.imgur.com/Pe3CPEB.jpg",
-                "",
-                "",
+                "-34.603759",
+                "-58.381549",
                 false
             ),
             TourEntity(
@@ -64,8 +64,8 @@ class TourRepository @Inject constructor(
                 "Embárcate en un tour exclusivo para presenciar la creación en vivo del Teatro Colón.",
                 15,
                 "https://i.imgur.com/XaZRFFd.jpg",
-                "",
-                "",
+                "-34.6010855",
+                "-58.3831868989758",
                 false
             )
         )
@@ -77,15 +77,15 @@ class TourRepository @Inject constructor(
         //val tourListModel = tourService.getPreviousExperiences()
         //tourDao.insertTourList(tourListModel)
         //return tourListModel.map { it.toDomain() }
-        val tourListModel = listOf<TourEntity>(
+        val tourListModel = listOf(
             TourEntity(
                 "1",
                 "Revolución de Mayo",
                 "Reviví el momento en el que Argentina se volvió un país soberano.",
                 25,
                 "https://i.imgur.com/IGB1rxN.jpg",
-                "",
-                "",
+                "-34.611293",
+                "-58.398129",
                 true
             ),
             TourEntity(
@@ -94,8 +94,8 @@ class TourRepository @Inject constructor(
                 "Explora la construcción del obelisco, considerado ícono de Buenos Aires.",
                 10,
                 "https://i.imgur.com/Pe3CPEB.jpg",
-                "",
-                "",
+                "-34.603759",
+                "-58.381549",
                 false
             ),
             TourEntity(
@@ -104,8 +104,8 @@ class TourRepository @Inject constructor(
                 "Embárcate en un tour exclusivo para presenciar la creación en vivo del Teatro Colón.",
                 15,
                 "https://i.imgur.com/XaZRFFd.jpg",
-                "",
-                "",
+                "-34.6010855",
+                "-58.3831868989758",
                 false
             )
         )
@@ -124,8 +124,8 @@ class TourRepository @Inject constructor(
                 "Reviví el momento en el que Argentina se volvió un país soberano.",
                 25,
                 "https://i.imgur.com/IGB1rxN.jpg",
-                "",
-                "",
+                "-34.611293",
+                "-58.398129",
                 true
             ),
             TourEntity(
@@ -134,8 +134,8 @@ class TourRepository @Inject constructor(
                 "Explora la construcción del obelisco, considerado ícono de Buenos Aires.",
                 10,
                 "https://i.imgur.com/Pe3CPEB.jpg",
-                "",
-                "",
+                "-34.603759",
+                "-58.381549",
                 false
             ),
             TourEntity(
@@ -144,18 +144,18 @@ class TourRepository @Inject constructor(
                 "Embárcate en un tour exclusivo para presenciar la creación en vivo del Teatro Colón.",
                 15,
                 "https://i.imgur.com/XaZRFFd.jpg",
-                "",
-                "",
+                "-34.6010855",
+                "-58.3831868989758",
                 false
             ),
             TourEntity(
                 "4",
-                "Creación del Teatro Colón",
-                "Embárcate en un tour exclusivo para presenciar la creación en vivo del Teatro Colón.",
-                15,
-                "https://i.imgur.com/XaZRFFd.jpg",
-                "",
-                "",
+                "Obelisco Inmortal",
+                "Explora la construcción del obelisco, considerado ícono de Buenos Aires.",
+                10,
+                "https://i.imgur.com/Pe3CPEB.jpg",
+                "-34.603759",
+                "-58.381549",
                 false
             ),
             TourEntity(
@@ -164,8 +164,8 @@ class TourRepository @Inject constructor(
                 "Embárcate en un tour exclusivo para presenciar la creación en vivo del Teatro Colón.",
                 15,
                 "https://i.imgur.com/XaZRFFd.jpg",
-                "",
-                "",
+                "-34.6010855",
+                "-58.3831868989758",
                 false
             )
         )

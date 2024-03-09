@@ -46,7 +46,7 @@ android {
 dependencies {
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
     implementation("com.google.android.gms:play-services-maps:18.2.0")
-    val fragmentVersion = "2.7.6"
+    val fragmentVersion = "2.7.7"
     val lifecycleVersion = "2.7.0"
     val retrofitVersion = "2.9.0"
     val hiltVersion = "2.48"
@@ -62,6 +62,7 @@ dependencies {
     implementation("androidx.activity:activity-ktx:1.8.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
     implementation ("androidx.datastore:datastore-preferences:1.0.0")
+    implementation ("com.google.android.gms:play-services-location:21.1.0")
 
     //ViewModel
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:${lifecycleVersion}")
@@ -82,7 +83,7 @@ dependencies {
     //Firebase & Google Auth
     implementation(platform("com.google.firebase:firebase-bom:32.2.3"))
     implementation("com.google.firebase:firebase-auth-ktx")
-    implementation("com.google.android.gms:play-services-auth:20.7.0")
+    implementation("com.google.android.gms:play-services-auth:21.0.0")
 
     //Picasso
     implementation("com.squareup.picasso:picasso:2.8")

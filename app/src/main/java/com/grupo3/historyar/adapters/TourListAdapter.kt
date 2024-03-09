@@ -1,5 +1,6 @@
 package com.grupo3.historyar.adapters
 
+import android.location.Location
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -9,7 +10,8 @@ import com.grupo3.historyar.view_holders.TourBigViewHolder
 
 class TourListAdapter(
     private var tourList: List<Tour> = emptyList(),
-    private val onItemSelected: (String) -> Unit
+    private val onItemSelected: (String) -> Unit,
+    private val currentUserLocation: Location
 ) : RecyclerView.Adapter<TourBigViewHolder>() {
 
     fun updateList(tourList: List<Tour>) {
@@ -29,6 +31,6 @@ class TourListAdapter(
     }
 
     override fun onBindViewHolder(holder: TourBigViewHolder, position: Int) {
-        holder.bind(tourList[position], onItemSelected)
+        holder.bind(tourList[position], onItemSelected, currentUserLocation)
     }
 }
