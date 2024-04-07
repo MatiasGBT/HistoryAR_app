@@ -44,8 +44,6 @@ android {
 }
 
 dependencies {
-    implementation("androidx.legacy:legacy-support-v4:1.0.0")
-    implementation("com.google.android.gms:play-services-maps:18.2.0")
     val fragmentVersion = "2.7.7"
     val lifecycleVersion = "2.7.0"
     val retrofitVersion = "2.9.0"
@@ -60,9 +58,11 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:${fragmentVersion}")
     implementation("androidx.fragment:fragment-ktx:1.6.2")
     implementation("androidx.activity:activity-ktx:1.8.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
     implementation ("androidx.datastore:datastore-preferences:1.0.0")
-    implementation ("com.google.android.gms:play-services-location:21.1.0")
+    implementation ("com.google.android.gms:play-services-location:21.2.0")
+    implementation("androidx.legacy:legacy-support-v4:1.0.0")
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
 
     //ViewModel
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:${lifecycleVersion}")
@@ -90,6 +90,9 @@ dependencies {
 
     //Gifs
     implementation("pl.droidsonroids.gif:android-gif-drawable:1.2.17")
+
+    //AR
+    implementation("com.gorisse.thomas.sceneform:sceneform:1.23.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

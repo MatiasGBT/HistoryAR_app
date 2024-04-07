@@ -95,6 +95,8 @@ class TourListFragment : Fragment() {
     private fun initAllToursAdapter(location: Location) {
         tourListAdapter = TourListAdapter(
             onItemSelected = { navigateToTourDetail(it) },
+            onPlaySelected = { navigateToTourPlay(it) },
+            onFavSelected = { navigateToTourDetail(it) }, //TODO: Darle a favorito
             currentUserLocation = location
         )
         binding.rvAllExperiences.setHasFixedSize(true)
@@ -116,6 +118,11 @@ class TourListFragment : Fragment() {
     private fun navigateToTourDetail(id: String) {
         val bundle = bundleOf(ID_BUNDLE to id)
         findNavController().navigate(R.id.action_tourListFragment_to_tourDetail, bundle)
+    }
+
+    private fun navigateToTourPlay(id: String) {
+        val bundle = bundleOf(ID_BUNDLE to id)
+        findNavController().navigate(R.id.action_tourListFragment_to_tourPlayFragment, bundle)
     }
 
     override fun onDestroyView() {

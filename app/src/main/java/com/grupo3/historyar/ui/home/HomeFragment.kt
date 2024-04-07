@@ -114,6 +114,8 @@ class HomeFragment : Fragment() {
     private fun initCloseExperiencesAdapter(location: Location) {
         closeExperiencesAdapter = CloseExperiencesAdapter(
             onItemSelected = { navigateToTourDetail(it) },
+            onPlaySelected = { navigateToTourPlay(it) },
+            onFavSelected = { navigateToTourDetail(it) }, //TODO: Darle a favorito
             currentUserLocation = location
         )
         binding.rvCloseExperiences.setHasFixedSize(true)
@@ -179,6 +181,11 @@ class HomeFragment : Fragment() {
     private fun navigateToTourDetail(id: String) {
         val bundle = bundleOf(ID_BUNDLE to id)
         findNavController().navigate(R.id.action_navigation_home_to_tourDetail, bundle)
+    }
+
+    private fun navigateToTourPlay(id: String) {
+        val bundle = bundleOf(ID_BUNDLE to id)
+        findNavController().navigate(R.id.action_navigation_home_to_tourPlayFragment, bundle)
     }
 
     private fun sendHelpEmail() {

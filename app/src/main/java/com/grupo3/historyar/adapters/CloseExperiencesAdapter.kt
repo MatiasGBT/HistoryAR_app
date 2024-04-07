@@ -11,6 +11,8 @@ import com.grupo3.historyar.view_holders.TourBigViewHolder
 class CloseExperiencesAdapter(
     private var tourList: List<Tour> = emptyList(),
     private val onItemSelected: (String) -> Unit,
+    private val onPlaySelected: (String) -> Unit,
+    private val onFavSelected: (String) -> Unit,
     private val currentUserLocation: Location
 ) : RecyclerView.Adapter<TourBigViewHolder>() {
 
@@ -30,6 +32,6 @@ class CloseExperiencesAdapter(
     }
 
     override fun onBindViewHolder(holder: TourBigViewHolder, position: Int) {
-        holder.bind(tourList[position], onItemSelected, currentUserLocation)
+        holder.bind(tourList[position], onItemSelected, onPlaySelected, onFavSelected, currentUserLocation)
     }
 }

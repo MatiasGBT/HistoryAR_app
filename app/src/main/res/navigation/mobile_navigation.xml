@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_navigation_home_to_tourDetail"
             app:destination="@id/tourDetail" />
+        <action
+            android:id="@+id/action_navigation_home_to_tourPlayFragment"
+            app:destination="@id/tourPlayFragment" />
     </fragment>
 
     <fragment
@@ -32,6 +35,9 @@
         <action
             android:id="@+id/action_tourListFragment_to_tourDetail"
             app:destination="@id/tourDetail" />
+        <action
+            android:id="@+id/action_tourListFragment_to_tourPlayFragment"
+            app:destination="@id/tourPlayFragment" />
     </fragment>
     <fragment
         android:id="@+id/tourDetail"
@@ -46,6 +52,15 @@
         android:id="@+id/tourPlayFragment"
         android:name="com.grupo3.historyar.ui.tour_play.TourPlayFragment"
         android:label="fragment_tour_play"
-        tools:layout="@layout/fragment_tour_play" />
+        tools:layout="@layout/fragment_tour_play" >
+        <action
+            android:id="@+id/action_tourPlayFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/cameraFragment"
+        android:name="com.grupo3.historyar.ui.camera.CameraFragment"
+        android:label="fragment_camera"
+        tools:layout="@layout/fragment_camera" />
 
 </navigation>

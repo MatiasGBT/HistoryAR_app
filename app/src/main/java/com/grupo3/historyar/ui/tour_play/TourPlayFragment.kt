@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -50,7 +52,19 @@ class TourPlayFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentTourPlayBinding.inflate(inflater, container, false)
+        initUI()
         return binding.root
+    }
+
+    private fun initUI() {
+        binding.fabCamera.setOnClickListener {
+            navigateToCamera()
+        }
+    }
+
+    private fun navigateToCamera() {
+        val bundle = bundleOf(ID_BUNDLE to id)
+        findNavController().navigate(R.id.action_tourPlayFragment_to_cameraFragment, bundle)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -12,7 +12,7 @@ import kotlin.math.roundToInt
 class TourBigViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     private val binding = FragmentTourBigBinding.bind(view)
 
-    fun bind(tour: Tour, onItemInfoSelected: (String) -> Unit, currentUserLocation: Location) {
+    fun bind(tour: Tour, onItemInfoSelected: (String) -> Unit, onItemPlaySelected: (String) -> Unit, onItemFavSelected: (String) -> Unit, currentUserLocation: Location) {
         val destiny = Location("Destiny")
         destiny.latitude = tour.latitude.toDouble()
         destiny.longitude = tour.longitude.toDouble()
@@ -28,8 +28,8 @@ class TourBigViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             binding.ivStarIcon.setImageResource(R.drawable.ic_round_star_border_24)
         }
 
-        binding.ivTourImage.setOnClickListener{}
-        binding.ivPlayIcon.setOnClickListener{}
         binding.clTourInfo.setOnClickListener{onItemInfoSelected(tour.id)}
+        binding.ivPlayIcon.setOnClickListener{onItemPlaySelected(tour.id)}
+        binding.ivStarIcon.setOnClickListener{onItemFavSelected(tour.id)}
     }
 }
