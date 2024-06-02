@@ -2,7 +2,9 @@ package com.grupo3.historyar.di
 
 import com.grupo3.historyar.data.network.api.clients.QualificationApiClient
 import com.grupo3.historyar.data.network.api.clients.PointOfInterestApiClient
+import com.grupo3.historyar.data.network.api.clients.RouteApiClient
 import com.grupo3.historyar.data.network.api.clients.TourApiClient
+import com.grupo3.historyar.data.network.api.clients.UserApiClient
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,14 +16,21 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
+    private var routeApiRetrofit: Retrofit? = null
 
     @Singleton
     @Provides
     fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://drawsomething-59328-default-rtdb.europe-west1.firebasedatabase.app/")
+            .baseUrl("http://tesis-web.onrender.com/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+    }
+
+    @Singleton
+    @Provides
+    fun provideUserApiClient(retrofit: Retrofit): UserApiClient {
+        return retrofit.create(UserApiClient::class.java)
     }
 
     @Singleton
@@ -38,7 +47,19 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideCalificationApiClient(retrofit: Retrofit): QualificationApiClient {
+    fun provideQualificationApiClient(retrofit: Retrofit): QualificationApiClient {
         return retrofit.create(QualificationApiClient::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideRouteApiClient(): RouteApiClient {
+        if (routeApiRetrofit == null) {
+            routeApiRetrofit = Retrofit.Builder()
+                .baseUrl("https://api.openrouteservice.org/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+        }
+        return routeApiRetrofit!!.create(RouteApiClient::class.java)
     }
 }

@@ -1,6 +1,7 @@
 package com.grupo3.historyar.data.network.model
 
 import com.google.gson.annotations.SerializedName
+import com.grupo3.historyar.data.database.entities.PointOfInterestEntity
 import com.grupo3.historyar.models.PointOfInterest
 
 data class PointOfInterestModel(
@@ -13,6 +14,15 @@ data class PointOfInterestModel(
 )
 
 fun PointOfInterestModel.toDomain() = PointOfInterest(
+    id = id,
+    name = name,
+    image = image,
+    latitude = latitude,
+    longitude = longitude,
+    model = model
+)
+
+fun PointOfInterestModel.toDatabase() = PointOfInterestEntity(
     id = id,
     name = name,
     image = image,

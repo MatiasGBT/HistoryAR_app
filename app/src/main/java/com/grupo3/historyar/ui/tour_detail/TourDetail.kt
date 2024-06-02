@@ -25,11 +25,11 @@ import com.grupo3.historyar.models.Tour
 import com.grupo3.historyar.models.User
 import com.grupo3.historyar.ui.view_models.*
 import com.squareup.picasso.Picasso
+import kotlin.math.roundToInt
 
 const val ID_BUNDLE = "id_bundle"
 class TourDetail : Fragment() {
     private val tourViewModel: TourViewModel by activityViewModels()
-    private val pointViewModel: PointOfInterestViewModel by activityViewModels()
     private val qualificationViewModel: QualificationViewModel by activityViewModels()
     private val userViewModel: UserViewModel by activityViewModels()
     private var id: String? = null
@@ -60,11 +60,9 @@ class TourDetail : Fragment() {
     private fun initUI() {
         //TODO: Obtener calificación del usuario y pintar estrellitas en base a dicha calificación
         observeTour()
-        observePointList()
         observeCommentList()
         observeUser()
         tourViewModel.getTour(id!!)
-        pointViewModel.getPointsByTourId(id!!)
         qualificationViewModel.getQualificationsByTourId(id!!)
         userViewModel.getUserLoggedIn()
         initPlayBtn()
@@ -73,16 +71,12 @@ class TourDetail : Fragment() {
 
     private fun observeTour() {
         tourViewModel.tourModel.observe(viewLifecycleOwner) {
+            clearStarIcons()
             tour = it
             binding.tvTourName.text = tour.name
             binding.tvTourDescription.text = tour.description
             Picasso.get().load(tour.image).into(binding.ivTourImage)
-        }
-    }
-
-    private fun observePointList() {
-        pointViewModel.pointListModel.observe(viewLifecycleOwner) {
-            initPointsOfInterestAdapter(it)
+            initPointsOfInterestAdapter(it.points)
         }
     }
 
@@ -93,6 +87,9 @@ class TourDetail : Fragment() {
         }
         qualificationViewModel.commentsModel.observe(viewLifecycleOwner) {
             qualifications = it.toMutableList()
+            val qualificationAverage = qualifications.map { qualification -> qualification.score }.average()
+            if (!qualificationAverage.isNaN())
+                paintStarIcons(qualificationAverage.roundToInt())
             initCommentsAdapter(qualifications)
         }
     }
@@ -208,14 +205,14 @@ class TourDetail : Fragment() {
     private fun createQualification(comment: String, qualification: Int) {
         val qualification = Qualification(
             user = user,
-            tour = tour,
+            tour = tour.id,
             comment = comment,
             score = qualification
         )
         qualifications = (listOf(qualification) + qualifications).toMutableList()
         commentAdapter.updateListByPosition(qualifications)
         //TODO: qualificationViewModel.deleteQualification if exists
-        //TODO: qualificationViewModel.saveQualification(qualification)
+        qualificationViewModel.saveQualification(qualification)
     }
 
     override fun onDestroyView() {

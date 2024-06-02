@@ -3,7 +3,6 @@ package com.grupo3.historyar.ui
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -16,8 +15,8 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.grupo3.historyar.R
-import com.grupo3.historyar.data.database.entities.toDatabase
 import com.grupo3.historyar.databinding.ActivityLoginBinding
+import com.grupo3.historyar.models.toDomain
 import com.grupo3.historyar.ui.view_models.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -77,21 +76,16 @@ class LoginActivity : AppCompatActivity() {
         val credential = GoogleAuthProvider.getCredential(account.idToken , null)
         auth.signInWithCredential(credential).addOnCompleteListener {
             if (it.isSuccessful) {
-                saveUser(account)
-                navigateToMainActivity()
+                userViewModel.saveUser(account.toDomain())
+                navigateToAppActivity()
             } else {
-                Toast.makeText(this, it.exception.toString() , Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, it.exception.toString(), Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    private fun saveUser(account: GoogleSignInAccount) {
-        val user = account.toDatabase()
-        userViewModel.saveUser(user)
-    }
-
-    private fun navigateToMainActivity() {
-        val intent = Intent(this, MainActivity::class.java)
+    private fun navigateToAppActivity() {
+        val intent = Intent(this, AppActivity::class.java)
         startActivity(intent)
     }
 }

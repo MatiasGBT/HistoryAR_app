@@ -1,42 +1,69 @@
 package com.grupo3.historyar.ui.tour_play
 
+import android.Manifest
+import android.annotation.SuppressLint
+import android.content.pm.PackageManager
+import android.graphics.Color
+import android.location.Location
 import androidx.fragment.app.Fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
 import com.google.android.gms.maps.CameraUpdateFactory
+
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.PolylineOptions
 import com.grupo3.historyar.R
+import com.grupo3.historyar.data.network.model.RouteModel
 import com.grupo3.historyar.databinding.FragmentTourPlayBinding
+import com.grupo3.historyar.models.PointOfInterest
+import com.grupo3.historyar.models.Tour
+import com.grupo3.historyar.ui.view_models.RouteViewModel
+import com.grupo3.historyar.ui.view_models.TourViewModel
 
+//TODO: Que se agreguen las experiencias que se visitan a la lista de vistas previamente
+//TODO: Que no permita al usuario ingresar si no tiene una suscripción activa
 const val ID_BUNDLE = "id_bundle"
+
 class TourPlayFragment : Fragment() {
+    companion object {
+        const val REQUEST_CODE_LOCATION = 0
+    }
+
+    private val tourViewModel: TourViewModel by activityViewModels()
+    private val routeViewModel: RouteViewModel by activityViewModels()
     private var id: String? = null
     private var _binding: FragmentTourPlayBinding? = null
     private val binding get() = _binding!!
+    private lateinit var map: GoogleMap
+    private lateinit var tour: Tour
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var pointList: List<PointOfInterest>
 
-    private val callback = OnMapReadyCallback { googleMap ->
-        /**
-         * Manipulates the map once available.
-         * This callback is triggered when the map is ready to be used.
-         * This is where we can add markers or lines, add listeners or move the camera.
-         * In this case, we just add a marker near Sydney, Australia.
-         * If Google Play services is not installed on the device, the user will be prompted to
-         * install it inside the SupportMapFragment. This method will only be triggered once the
-         * user has installed Google Play services and returned to the app.
-         */
-        val sydney = LatLng(-34.0, 151.0)
-        googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+    private val mapReadyCallback = OnMapReadyCallback { googleMap ->
+        map = googleMap
+        map.setMinZoomPreference(15F)
+        map.setMaxZoomPreference(20F)
+        enableGoogleMapLocation()
+        getCurrentLocation()
+        observeTour()
+        observeRoute()
+        tourViewModel.getTour(id!!)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,8 +77,9 @@ class TourPlayFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentTourPlayBinding.inflate(inflater, container, false)
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
         initUI()
         return binding.root
     }
@@ -59,6 +87,45 @@ class TourPlayFragment : Fragment() {
     private fun initUI() {
         binding.fabCamera.setOnClickListener {
             navigateToCamera()
+        }
+    }
+
+    private fun observeTour() {
+        tourViewModel.tourModel.observe(viewLifecycleOwner) {
+            tour = it
+            binding.tvTourName.text = tour.name
+            initPointList(tour.points)
+        }
+    }
+
+    private fun initPointList(points: List<PointOfInterest>) {
+        pointList = points
+        var nextIndex: Int;
+        points.forEachIndexed { currentIndex, point ->
+            val markerLocation = LatLng(point.latitude.toDouble(), point.longitude.toDouble())
+            map.addMarker(MarkerOptions().position(markerLocation).title(point.name))
+            nextIndex = currentIndex + 1
+            if (nextIndex in points.indices) {
+                createRouteBetweenPOIs(points[currentIndex], points[nextIndex])
+            }
+        }
+    }
+
+    private fun createRouteBetweenCurrentLocationAndFirstPOI(currentLocation: Location) {
+        val origin = currentLocation.longitude.toString() + ',' + currentLocation.latitude.toString()
+        val destination = pointList.first().longitude + ',' + pointList.first().latitude
+        routeViewModel.getRoute(origin, destination)
+    }
+
+    private fun createRouteBetweenPOIs(originPoint: PointOfInterest, destinationPoint: PointOfInterest) {
+        val origin = originPoint.longitude + ',' + originPoint.latitude
+        val destination = destinationPoint.longitude + ',' + destinationPoint.latitude
+        routeViewModel.getRoute(origin, destination)
+    }
+
+    private fun observeRoute() {
+        routeViewModel.routeModel.observe(viewLifecycleOwner) {
+            drawRouteBetweenPoints(it)
         }
     }
 
@@ -70,11 +137,104 @@ class TourPlayFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
-        mapFragment?.getMapAsync(callback)
+        mapFragment?.getMapAsync(mapReadyCallback)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun getCurrentLocation() {
+        fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null)
+            .addOnSuccessListener { location: Location? ->
+                if (location != null) {
+                    createRouteBetweenCurrentLocationAndFirstPOI(location)
+                    centerMapToCurrentLocation(location)
+                }
+            }
+    }
+
+    private fun centerMapToCurrentLocation(location: Location) {
+        val currentLocation = LatLng(location.latitude, location.longitude)
+        map.moveCamera(CameraUpdateFactory.newLatLng(currentLocation))
+    }
+
+    private fun isLocationPermissionGranted() = ContextCompat.checkSelfPermission(
+        requireActivity(),
+        Manifest.permission.ACCESS_FINE_LOCATION
+    ) == PackageManager.PERMISSION_GRANTED
+
+    private fun enableGoogleMapLocation() {
+        if (!::map.isInitialized) return
+        if (isLocationPermissionGranted()) {
+            map.isMyLocationEnabled = true
+        } else {
+            requestLocationPermission()
+        }
+    }
+
+    private fun requestLocationPermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(
+                requireActivity(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
+        ) {
+            Toast.makeText(
+                requireActivity(),
+                "La ubicación no esta activada para esta aplicación. Por favor, activala en los ajustes",
+                Toast.LENGTH_SHORT
+            ).show()
+        } else {
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                REQUEST_CODE_LOCATION
+            )
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        when (requestCode) {
+            REQUEST_CODE_LOCATION -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                map.isMyLocationEnabled = true
+            } else {
+                Toast.makeText(
+                    requireActivity(),
+                    "La ubicación no esta activada para esta aplicación. Por favor, activala en los ajustes",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            else -> {}
+        }
+    }
+
+    //TODO: Reemplazar RouteModel por su contraparte en modelo estandar
+    private fun drawRouteBetweenPoints(route: RouteModel) {
+        val polylineOptions = PolylineOptions()
+        route.features.first().geometry.coordinates.forEach {
+            polylineOptions.add(LatLng(it[1], it[0]))
+        }
+        polylineOptions.color(Color.BLUE)
+        map.addPolyline(polylineOptions)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (!::map.isInitialized) return
+        if (!isLocationPermissionGranted()) {
+            map.isMyLocationEnabled = false
+            Toast.makeText(
+                requireActivity(),
+                "La ubicación no esta activada para esta aplicación. Por favor, activala en los ajustes",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 }

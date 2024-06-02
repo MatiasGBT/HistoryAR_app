@@ -3,6 +3,7 @@
     <color name="background">#242424</color>
     <color name="nav_background">#333333</color>
     <color name="text">#ffffff</color>
+    <color name="textLessVisible">#B3FFFFFF</color>
     <color name="textSecondary">#9AFFFFFF</color>
     <color name="btn_text">#ffffff</color>
     <color name="primary">#2f51da</color>

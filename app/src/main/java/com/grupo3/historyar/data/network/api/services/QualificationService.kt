@@ -11,8 +11,8 @@ class QualificationService @Inject constructor(private val api: QualificationApi
 
     suspend fun getByTourId(idTour: String): List<QualificationModel> {
         return withContext(Dispatchers.IO) {
-            val response = api.getByTourId(idTour)
-            response.body() ?: emptyList()
+            val response = api.getByTourId()
+            response.body()?.filter { it.idTour == idTour } ?: emptyList()
         }
     }
 

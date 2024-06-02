@@ -17,7 +17,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import android.location.Location
+import android.location.LocationManager
 import android.util.Log
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -27,8 +29,7 @@ import com.grupo3.historyar.adapters.CloseExperiencesAdapter
 import com.grupo3.historyar.adapters.PreviousExperiencesAdapter
 import com.grupo3.historyar.databinding.FragmentHomeBinding
 import com.grupo3.historyar.ui.tour_mini.ID_BUNDLE
-import com.grupo3.historyar.ui.view_models.PreferencesViewModel
-import com.grupo3.historyar.ui.view_models.TourViewModel
+import com.grupo3.historyar.ui.view_models.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -36,20 +37,21 @@ import kotlinx.coroutines.launch
 class HomeFragment : Fragment() {
     private val preferencesViewModel: PreferencesViewModel by activityViewModels()
     private val tourViewModel: TourViewModel by activityViewModels()
+    private val userViewModel: UserViewModel by activityViewModels()
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private lateinit var closeExperiencesAdapter: CloseExperiencesAdapter
     private lateinit var previousExperiencesAdapter: PreviousExperiencesAdapter
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var locationManager: LocationManager
 
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
-        if (isGranted) {
+        if (isGranted)
             getLastLocation()
-        } else {
-            //TODO: Añadir una pantalla que le indique al usuario que los permisos son obligatorios
-        }
+        else
+            showNoLocationOnCloseExperiences()
     }
 
     override fun onCreateView(
@@ -59,13 +61,17 @@ class HomeFragment : Fragment() {
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
+        locationManager = requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
         initUI()
         return binding.root
     }
 
     private fun initUI() {
-        startLocationPermissionRequest()
-        initPreviousExperiences()
+        if (isLocationEnabled())
+            startLocationPermissionRequest()
+        else
+            showNoLocationOnCloseExperiences()
+        initUser()
         binding.btnSupport.setOnClickListener {
             sendHelpEmail()
         }
@@ -79,11 +85,11 @@ class HomeFragment : Fragment() {
     private fun getLastLocation() {
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location: Location? ->
-                if (location == null) {
-                    Log.i("HistoryAR", "No last known location. Fetching current location.")
-                    getCurrentLocation()
-                } else {
+                if (location != null) {
                     initCloseExperiences(location)
+                } else {
+                    Log.i("HistoryAR.debug", "No last known location. Fetching current location.")
+                    getCurrentLocation()
                 }
             }
     }
@@ -92,19 +98,26 @@ class HomeFragment : Fragment() {
     private fun getCurrentLocation() {
         fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null)
             .addOnSuccessListener { location: Location? ->
-                if (location == null) {
-                    Log.i("test", "No current location.")
-                    //TODO: Mostrar texto de que no se pudo obtener la ubicación
-                } else {
+                if (location  != null) {
                     initCloseExperiences(location)
+                } else {
+                    Log.i("HistoryAR.debug", "No current location found.")
+                    showNoLocationOnCloseExperiences()
                 }
             }
+    }
+
+    private fun showNoLocationOnCloseExperiences() {
+        binding.rvCloseExperiences.isVisible = false
+        binding.gviSwipe.isVisible = false
+        binding.btnMoreExperiences.isVisible = false
+        binding.tvNoGeo.isVisible = true
     }
 
     private fun initCloseExperiences(location: Location) {
         initCloseExperiencesAdapter(location)
         observeCloseExperiencesMutableData()
-        tourViewModel.getCloseExperiences()
+        tourViewModel.getCloseExperiences(location.latitude, location.longitude)
         initHomeSwipeGif()
         binding.btnMoreExperiences.setOnClickListener {
             findNavController().navigate(R.id.action_navigation_home_to_tourListFragment)
@@ -130,8 +143,21 @@ class HomeFragment : Fragment() {
             binding.rvCloseExperiences.isVisible = !it
         }
         tourViewModel.closeExperiencesModel.observe(viewLifecycleOwner) {
-            closeExperiencesAdapter.updateList(it)
+            if (it.isNotEmpty()) {
+                closeExperiencesAdapter.updateList(it)
+                binding.tvNoGeo.isVisible = false
+            } else {
+                showNoCloseExperiences()
+            }
         }
+    }
+
+    private fun showNoCloseExperiences() {
+        binding.rvCloseExperiences.isVisible = false
+        binding.gviSwipe.isVisible = false
+        binding.tvNoCloseExperiences.isVisible = true
+        binding.btnMoreExperiences.isVisible = true
+        binding.tvNoGeo.isVisible = false
     }
 
     private fun initHomeSwipeGif() {
@@ -154,10 +180,17 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun initPreviousExperiences() {
+    private fun initUser() {
+        userViewModel.userModel.observe(viewLifecycleOwner, Observer {
+            initPreviousExperiences(it.lastTourIds)
+        })
+        userViewModel.getUserLoggedIn()
+    }
+
+    private fun initPreviousExperiences(lastTourIds: List<String>) {
         initPreviousExperiencesAdapter()
         observePreviousExperiencesMutableData()
-        tourViewModel.getPreviousExperiences()
+        tourViewModel.getPreviousExperiences(lastTourIds)
     }
 
     private fun initPreviousExperiencesAdapter() {
@@ -174,8 +207,16 @@ class HomeFragment : Fragment() {
             binding.rvPreviousExperiences.isVisible = !it
         })
         tourViewModel.previousExperiencesModel.observe(viewLifecycleOwner, Observer {
-            previousExperiencesAdapter.updateList(it)
+            if (it.isNotEmpty())
+                previousExperiencesAdapter.updateList(it)
+            else
+                showNoPreviousExperiences()
         })
+    }
+
+    private fun showNoPreviousExperiences() {
+        binding.rvPreviousExperiences.isVisible = false
+        binding.tvNoPreviousExperiences.isVisible = true
     }
 
     private fun navigateToTourDetail(id: String) {
@@ -198,6 +239,11 @@ class HomeFragment : Fragment() {
         if (intent.resolveActivity(requireActivity().packageManager) != null) {
             startActivity(intent)
         }
+    }
+
+    private fun isLocationEnabled(): Boolean {
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+                locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
     }
 
     override fun onDestroyView() {

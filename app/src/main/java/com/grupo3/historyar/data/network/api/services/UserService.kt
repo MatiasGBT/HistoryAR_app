@@ -14,4 +14,11 @@ class UserService @Inject constructor(private val api: UserApiClient) {
             response.body() ?: UserModel()
         }
     }
+
+    suspend fun saveUser(user: UserModel): UserModel {
+        return withContext(Dispatchers.IO) {
+            val response = api.saveUser(user)
+            response.body() ?: UserModel()
+        }
+    }
 }

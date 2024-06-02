@@ -2,6 +2,7 @@ package com.grupo3.historyar.ui.profile
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,12 +12,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
-import androidx.lifecycle.Observer
 import com.google.firebase.auth.FirebaseAuth
 import com.grupo3.historyar.databinding.FragmentProfileBinding
+import com.grupo3.historyar.models.User
 import com.grupo3.historyar.ui.LoginActivity
 import com.grupo3.historyar.ui.tour_mini.ID_BUNDLE
-import com.grupo3.historyar.ui.tour_mini.TourMiniFragment
+import com.grupo3.historyar.ui.tour_profile.TourProfileFragment
 import com.grupo3.historyar.ui.view_models.UserViewModel
 import com.grupo3.historyar.ui.view_models.PreferencesViewModel
 import com.grupo3.historyar.ui.view_models.TourViewModel
@@ -59,28 +60,33 @@ class ProfileFragment() : Fragment() {
             startActivity(Intent(this.activity, LoginActivity::class.java))
         }
         initUser()
-        initFavoriteTourFragment()
     }
 
     private fun initUser() {
         userViewModel.userModel.observe(viewLifecycleOwner) {
-            Picasso.get().load(it.photo).into(binding.ivAccountImage)
+            if (it.photo.isNotEmpty())
+                Picasso.get().load(it.photo).into(binding.ivAccountImage)
             binding.tvUsername.text = it.fullName
+            initFavoriteTourFragment(it)
         }
-        userViewModel.getUserLoggedIn()
     }
 
-    private fun initFavoriteTourFragment() {
+    private fun initFavoriteTourFragment(user: User) {
         tourViewModel.tourIsLoading.observe(viewLifecycleOwner) {
             binding.pbTour.isVisible = it
             binding.fcFavoriteTour.isVisible = !it
         }
         //TODO: Enviar el ID por el favoriteTour del user
         //TODO: Que el tour favorito sea clickeable
-        val bundle = bundleOf(ID_BUNDLE to "1")
+        //val bundle = bundleOf(ID_BUNDLE to user.favoriteTourId)
+        val bundle = if (user.favoriteTourId.isNotEmpty()) {
+            bundleOf(ID_BUNDLE to user.favoriteTourId)
+        } else {
+            bundleOf(ID_BUNDLE to "1")
+        }
         childFragmentManager.commit {
             setReorderingAllowed(true)
-            add<TourMiniFragment>(binding.fcFavoriteTour.id, args = bundle)
+            add<TourProfileFragment>(binding.fcFavoriteTour.id, args = bundle)
         }
     }
 

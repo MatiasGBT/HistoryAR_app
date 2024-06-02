@@ -46,8 +46,6 @@ class TourBigFragment : Fragment() {
     private fun initViewModel() {
         tourViewModel.tourModel.observe(viewLifecycleOwner, Observer {
             binding.tvTourName.text = it.name
-            binding.tvTourDistance.text = "450m"
-            binding.tvTourDuration.text = it.duration.toString() + " minutos"
             binding.tvTourDescription.text = it.description
             Picasso.get().load(it.image).into(binding.ivTourImage)
             if (it.isFavorite) {

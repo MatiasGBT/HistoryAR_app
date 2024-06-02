@@ -7,8 +7,8 @@ import retrofit2.http.*
 
 interface QualificationApiClient {
 
-    @GET("/.json")
-    suspend fun getByTourId(id: String): Response<List<QualificationModel>>
+    @GET("calificacion")
+    suspend fun getByTourId(): Response<List<QualificationModel>>
 
     @POST("/.json")
     suspend fun save(qualification: Qualification)

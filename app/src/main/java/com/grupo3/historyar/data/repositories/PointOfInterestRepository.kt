@@ -38,27 +38,27 @@ class PointOfInterestRepository @Inject constructor(
         val pointListModel = listOf(
             PointOfInterestEntity(
                 "1",
-                "Plaza de Mayo",
-                "https://i.imgur.com/IGB1rxN.jpg",
-                "",
-                "",
-                ""
+                "La Recova",
+                "https://i.imgur.com/k8PLEYd.jpeg",
+                "-34.603759",
+                "-58.381549",
+                "https://tesis-web.onrender.com/media/modelos/halloween_q7MaqI4.glb"
             ),
             PointOfInterestEntity(
                 "2",
-                "La Recova",
-                "https://i.imgur.com/k8PLEYd.jpeg",
-                "",
-                "",
-                ""
+                "Colegio San Carlos",
+                "https://i.imgur.com/WCscTqh.jpeg",
+                "-34.6010855",
+                "-58.3831868989758",
+                "https://tesis-web.onrender.com/media/modelos/halloween_q7MaqI4.glb"
             ),
             PointOfInterestEntity(
                 "3",
-                "Colegio San Carlos",
-                "https://i.imgur.com/WCscTqh.jpeg",
-                "",
-                "",
-                ""
+                "Plaza de Mayo",
+                "https://i.imgur.com/IGB1rxN.jpg",
+                "-34.611293",
+                "-58.398129",
+                "https://tesis-web.onrender.com/media/modelos/halloween_q7MaqI4.glb"
             )
         )
         pointDao.insertPointList(pointListModel)

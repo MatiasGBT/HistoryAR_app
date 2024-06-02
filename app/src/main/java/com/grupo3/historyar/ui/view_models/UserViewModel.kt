@@ -3,10 +3,8 @@ package com.grupo3.historyar.ui.view_models
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.grupo3.historyar.data.database.entities.UserEntity
 import com.grupo3.historyar.data.repositories.UserRepository
 import com.grupo3.historyar.models.User
-import com.grupo3.historyar.models.toDomain
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,14 +16,19 @@ class UserViewModel @Inject constructor(private val userRepository: UserReposito
     fun getUserLoggedIn() {
         viewModelScope.launch {
             val currentUser = userRepository.getCurrentUser()
-            if (currentUser != null)
-                userModel.postValue(currentUser.toDomain())
+            userModel.postValue(currentUser)
         }
     }
 
-    fun saveUser(user: UserEntity) {
+    fun getUserById(idUser: String) {
         viewModelScope.launch {
-            userRepository.deleteUser()
+            val user = userRepository.getUserById(idUser)
+            userModel.postValue(user)
+        }
+    }
+
+    fun saveUser(user: User) {
+        viewModelScope.launch {
             userRepository.saveUser(user)
         }
     }

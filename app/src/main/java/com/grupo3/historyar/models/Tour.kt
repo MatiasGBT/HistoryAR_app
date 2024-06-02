@@ -10,16 +10,6 @@ data class Tour(
     val image: String,
     val latitude: String,
     val longitude: String,
-    val isFavorite: Boolean
-)
-
-fun TourEntity.toDomain() = Tour(
-    id = id,
-    name = name,
-    description = description,
-    duration = duration,
-    image = image,
-    latitude = latitude,
-    longitude = longitude,
-    isFavorite = isFavorite
+    val isFavorite: Boolean,
+    val points: List<PointOfInterest>
 )

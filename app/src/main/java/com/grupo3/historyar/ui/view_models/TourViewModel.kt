@@ -25,30 +25,24 @@ class TourViewModel @Inject constructor(private val tourRepository: TourReposito
         viewModelScope.launch {
             tourIsLoading.postValue(true)
             val tour = tourRepository.getTourById(id)
-            if (tour != null) {
-                tourModel.postValue(tour!!)
-            }
+            tourModel.postValue(tour)
             tourIsLoading.postValue(false)
         }
     }
 
-    fun getCloseExperiences() {
+    fun getCloseExperiences(latitude: Double, longitude: Double) {
         viewModelScope.launch {
             closeExperiencesAreLoading.postValue(true)
-            val tourList = tourRepository.getCloseExperiences()
-            if (tourList != null) {
-                closeExperiencesModel.postValue(tourList!!)
-            } else {
-                closeExperiencesModel.postValue(emptyList())
-            }
+            val tourList = tourRepository.getCloseExperiences(latitude, longitude)
+            closeExperiencesModel.postValue(tourList!!)
             closeExperiencesAreLoading.postValue(false)
         }
     }
 
-    fun getPreviousExperiences() {
+    fun getPreviousExperiences(lastTourIds: List<String>) {
         viewModelScope.launch {
             previousExperiencesAreLoading.postValue(true)
-            val tourList = tourRepository.getPreviousExperiences()
+            val tourList = tourRepository.getPreviousExperiences(lastTourIds)
             if (tourList != null) {
                 previousExperiencesModel.postValue(tourList!!)
             } else {
@@ -62,11 +56,7 @@ class TourViewModel @Inject constructor(private val tourRepository: TourReposito
         viewModelScope.launch {
             allToursAreLoading.postValue(true)
             val tourList = tourRepository.getAll()
-            if (tourList != null) {
-                allToursModel.postValue(tourList!!)
-            } else {
-                allToursModel.postValue(emptyList())
-            }
+            allToursModel.postValue(tourList)
             allToursAreLoading.postValue(false)
         }
     }

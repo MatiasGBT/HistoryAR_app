@@ -10,8 +10,10 @@ import com.grupo3.historyar.models.User
 data class UserEntity(
     @PrimaryKey(autoGenerate = false) val id: String,
     @ColumnInfo(name = "photo") val photo: String,
-    @ColumnInfo(name = "full_name") val fullName: String
+    @ColumnInfo(name = "full_name") val fullName: String,
+    @ColumnInfo(name = "favorite_tour") val favoriteTourId: String?,
+    @ColumnInfo(name = "last_tours") val lastTourIds: List<String>?
 )
 
-fun User.toDatabase() = UserEntity(id = id, photo = photo, fullName = fullName)
-fun GoogleSignInAccount.toDatabase() = UserEntity(id = id.orEmpty(), photo = photoUrl.toString(), fullName = displayName.orEmpty())
+fun UserEntity.toDomain() = User(id = id, photo = photo, fullName = fullName, favoriteTourId = favoriteTourId.orEmpty(), lastTourIds = lastTourIds.orEmpty())
+//fun GoogleSignInAccount.toDatabase() = UserEntity(id = id.orEmpty(), photo = photoUrl.toString(), fullName = displayName.orEmpty())

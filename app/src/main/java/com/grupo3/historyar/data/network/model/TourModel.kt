@@ -9,7 +9,7 @@ data class TourModel(
     @SerializedName("nombre") val name: String = "",
     @SerializedName("descripcion") val description: String = "",
     @SerializedName("duracion") val duration: Int = 0,
-    @SerializedName("puntosDeInteres") val pointsOnInterest: List<PointOfInterestModel> = emptyList()
+    @SerializedName("puntoInteres") val pointsOfInterest: List<PointOfInterestModel> = emptyList()
 )
 
 fun TourModel.toDatabase(isFavorite: Boolean) = TourEntity(
@@ -17,10 +17,11 @@ fun TourModel.toDatabase(isFavorite: Boolean) = TourEntity(
     name = name,
     description = description,
     duration = duration,
-    image = pointsOnInterest.first().image,
-    latitude = pointsOnInterest.first().latitude,
-    longitude = pointsOnInterest.first().longitude,
-    isFavorite = isFavorite
+    image = pointsOfInterest.first().image,
+    latitude = pointsOfInterest.first().latitude,
+    longitude = pointsOfInterest.first().longitude,
+    isFavorite = isFavorite,
+    points = pointsOfInterest.map { it.toDatabase() }
 )
 
 fun TourModel.toDomain(isFavorite: Boolean) = Tour(
@@ -28,8 +29,9 @@ fun TourModel.toDomain(isFavorite: Boolean) = Tour(
     name = name,
     description = description,
     duration = duration,
-    image = pointsOnInterest.first().image,
-    latitude = pointsOnInterest.first().latitude,
-    longitude = pointsOnInterest.first().longitude,
-    isFavorite = isFavorite
+    image = pointsOfInterest.first().image,
+    latitude = pointsOfInterest.first().latitude,
+    longitude = pointsOfInterest.first().longitude,
+    isFavorite = isFavorite,
+    points = pointsOfInterest.map { it.toDomain() }
 )
