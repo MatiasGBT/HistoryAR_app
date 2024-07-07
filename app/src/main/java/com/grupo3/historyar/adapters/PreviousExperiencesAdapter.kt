@@ -9,7 +9,8 @@ import com.grupo3.historyar.view_holders.TourMiniViewHolder
 
 class PreviousExperiencesAdapter(
     private var tourList: List<Tour> = emptyList(),
-    private val onItemSelected: (String) -> Unit
+    private val onItemSelected: (String) -> Unit,
+    private val onFavSelected: (String) -> Unit
 ) : RecyclerView.Adapter<TourMiniViewHolder>() {
 
     fun updateList(tourList: List<Tour>) {
@@ -28,6 +29,10 @@ class PreviousExperiencesAdapter(
     }
 
     override fun onBindViewHolder(holder: TourMiniViewHolder, position: Int) {
-        holder.bind(tourList[position], onItemSelected)
+        holder.bind(tourList[position], onItemSelected, onItemFavSelected = {
+            tourList.forEach { tour -> tour.isFavorite = tour.id == it }
+            updateList(tourList)
+            onFavSelected(it)
+        })
     }
 }

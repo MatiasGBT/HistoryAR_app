@@ -10,7 +10,7 @@ data class User(
     val photo: String = "",
     val fullName: String = "",
     val email: String = "",
-    val favoriteTourId: String = "1",
+    var favoriteTourId: String = "",
     val lastTourIds: List<String> = listOf("1", "2", "3")
 )
 

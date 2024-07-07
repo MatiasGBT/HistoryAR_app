@@ -1,8 +1,12 @@
 package com.grupo3.historyar.data.network.api.clients
 
+import com.grupo3.historyar.data.network.model.FavoriteTourModel
+import com.grupo3.historyar.data.network.model.QualificationModel
 import com.grupo3.historyar.data.network.model.TourModel
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -17,9 +21,15 @@ interface TourApiClient {
         @Query("longitud") longitude: Double
     ): Response<List<TourModel>>
 
-    @GET("usuario/usuarios/{id}")
-    suspend fun getPreviousExperiences(idUser: String): Response<List<TourModel>>
-
     @GET("recorrido/recorrido/")
     suspend fun getAll(): Response<List<TourModel>>
+
+    @GET("usuario/usuario_favorito/{id}")
+    suspend fun getFavoriteUserTour(@Path("id") idUser: String): Response<FavoriteTourModel>
+
+    @PUT("usuario/usuario_favorito/{id}/")
+    suspend fun updateFavoriteUserTour(
+        @Path("id") idUser: String,
+        @Body favoriteTour: FavoriteTourModel
+    ): Response<TourModel>
 }

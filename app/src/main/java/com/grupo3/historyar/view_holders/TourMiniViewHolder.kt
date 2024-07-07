@@ -10,7 +10,7 @@ import com.squareup.picasso.Picasso
 class TourMiniViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     private val binding = FragmentTourMiniBinding.bind(view)
 
-    fun bind(tour: Tour, onItemSelected: (String) -> Unit) {
+    fun bind(tour: Tour, onItemSelected: (String) -> Unit, onItemFavSelected: (String) -> Unit) {
         binding.tvTourName.text = tour.name
         binding.tvTourDuration.text = tour.duration
         Picasso.get().load(tour.image).into(binding.ivTourImage)
@@ -21,5 +21,11 @@ class TourMiniViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         }
 
         binding.cvTour.setOnClickListener{onItemSelected(tour.id)}
+        binding.ivStarIcon.setOnClickListener{
+            if (!tour.isFavorite) {
+                tour.isFavorite =  true
+                onItemFavSelected(tour.id)
+            }
+        }
     }
 }

@@ -9,15 +9,15 @@ data class UserModel(
     @SerializedName("imagen") val photo: String = "",
     @SerializedName("nombre") val fullName: String = "",
     @SerializedName("email") val email: String = "",
-    @SerializedName("recorridoFavorito") val favoriteTourId: String = "1",
-    @SerializedName("ultimosRecorridos") val lastTourIds: String = "1"
+    @SerializedName("recorridoFavorito") val favoriteTourId: String? = "",
+    @SerializedName("ultimosRecorridos") val lastTourIds: String = ""
 )
 
 fun UserModel.toDomain() = User(
     id = id,
     photo = photo,
-    fullName = fullName
-    //favoriteTour = favoriteTour.toDomain(false),
+    fullName = fullName,
+    favoriteTourId = favoriteTourId ?: ""
 )
 
 fun UserModel.toDatabase() = UserEntity(

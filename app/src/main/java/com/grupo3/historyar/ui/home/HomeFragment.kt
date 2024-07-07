@@ -28,6 +28,7 @@ import com.grupo3.historyar.R
 import com.grupo3.historyar.adapters.CloseExperiencesAdapter
 import com.grupo3.historyar.adapters.PreviousExperiencesAdapter
 import com.grupo3.historyar.databinding.FragmentHomeBinding
+import com.grupo3.historyar.models.User
 import com.grupo3.historyar.ui.tour_mini.ID_BUNDLE
 import com.grupo3.historyar.ui.view_models.*
 import kotlinx.coroutines.CoroutineScope
@@ -44,6 +45,7 @@ class HomeFragment : Fragment() {
     private lateinit var previousExperiencesAdapter: PreviousExperiencesAdapter
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationManager: LocationManager
+    private lateinit var currentUser: User
 
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -128,7 +130,7 @@ class HomeFragment : Fragment() {
         closeExperiencesAdapter = CloseExperiencesAdapter(
             onItemSelected = { navigateToTourDetail(it) },
             onPlaySelected = { navigateToTourPlay(it) },
-            onFavSelected = { navigateToTourDetail(it) }, //TODO: Darle a favorito
+            onFavSelected = { setFavoriteTour(it) },
             currentUserLocation = location
         )
         binding.rvCloseExperiences.setHasFixedSize(true)
@@ -183,6 +185,7 @@ class HomeFragment : Fragment() {
     private fun initUser() {
         userViewModel.userModel.observe(viewLifecycleOwner, Observer {
             initPreviousExperiences(it.lastTourIds)
+            currentUser = it
         })
         userViewModel.getUserLoggedIn()
     }
@@ -194,7 +197,10 @@ class HomeFragment : Fragment() {
     }
 
     private fun initPreviousExperiencesAdapter() {
-        previousExperiencesAdapter = PreviousExperiencesAdapter { navigateToTourDetail(it) }
+        previousExperiencesAdapter = PreviousExperiencesAdapter(
+            onItemSelected = { navigateToTourDetail(it) },
+            onFavSelected = { setFavoriteTour(it) }
+        )
         binding.rvPreviousExperiences.setHasFixedSize(true)
         binding.rvPreviousExperiences.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -222,6 +228,12 @@ class HomeFragment : Fragment() {
     private fun navigateToTourDetail(id: String) {
         val bundle = bundleOf(ID_BUNDLE to id)
         findNavController().navigate(R.id.action_navigation_home_to_tourDetailFragment, bundle)
+    }
+
+    private fun setFavoriteTour(idTour: String) {
+        tourViewModel.setFavoriteTour(currentUser.id, idTour)
+        currentUser.favoriteTourId = idTour
+        userViewModel.updateUser(currentUser)
     }
 
     private fun navigateToTourPlay(id: String) {

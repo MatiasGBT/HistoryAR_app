@@ -17,7 +17,6 @@ class TourListAdapter(
 ) : RecyclerView.Adapter<TourBigViewHolder>() {
 
     fun updateList(tourList: List<Tour>) {
-        //TODO: Modificar notifyDataSetChanged() para optimizar el código ya que esta lista puede ser larga
         this.tourList = tourList
         notifyDataSetChanged()
     }
@@ -33,6 +32,10 @@ class TourListAdapter(
     }
 
     override fun onBindViewHolder(holder: TourBigViewHolder, position: Int) {
-        holder.bind(tourList[position], onItemSelected, onPlaySelected, onFavSelected, currentUserLocation)
+        holder.bind(tourList[position], onItemSelected, onPlaySelected, onItemFavSelected = {
+            tourList.forEach { tour -> tour.isFavorite = tour.id == it }
+            updateList(tourList)
+            onFavSelected(it)
+        }, currentUserLocation)
     }
 }

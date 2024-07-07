@@ -9,10 +9,11 @@ data class TourModel(
     @SerializedName("nombre") val name: String = "",
     @SerializedName("descripcion") val description: String = "",
     @SerializedName("duracion") val duration: String = "",
-    @SerializedName("puntoInteres") val pointsOfInterest: List<PointOfInterestModel> = emptyList()
+    @SerializedName("puntoInteres") val pointsOfInterest: List<PointOfInterestModel> = emptyList(),
+    var isFavorite: Boolean = false
 )
 
-fun TourModel.toDatabase(isFavorite: Boolean) = TourEntity(
+fun TourModel.toDatabase() = TourEntity(
     id = id,
     name = name,
     description = description,
@@ -24,7 +25,7 @@ fun TourModel.toDatabase(isFavorite: Boolean) = TourEntity(
     points = pointsOfInterest.map { it.toDatabase() }
 )
 
-fun TourModel.toDomain(isFavorite: Boolean) = Tour(
+fun TourModel.toDomain() = Tour(
     id = id,
     name = name,
     description = description,

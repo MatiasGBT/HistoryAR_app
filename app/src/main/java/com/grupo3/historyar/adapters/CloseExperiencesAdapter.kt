@@ -32,6 +32,10 @@ class CloseExperiencesAdapter(
     }
 
     override fun onBindViewHolder(holder: TourBigViewHolder, position: Int) {
-        holder.bind(tourList[position], onItemSelected, onPlaySelected, onFavSelected, currentUserLocation)
+        holder.bind(tourList[position], onItemSelected, onPlaySelected, onItemFavSelected = {
+            tourList.forEach { tour -> tour.isFavorite = tour.id == it }
+            updateList(tourList)
+            onFavSelected(it)
+        }, currentUserLocation)
     }
 }

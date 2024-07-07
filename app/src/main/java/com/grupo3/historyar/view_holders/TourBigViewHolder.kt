@@ -1,6 +1,7 @@
 package com.grupo3.historyar.view_holders
 
 import android.location.Location
+import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.grupo3.historyar.R
@@ -30,6 +31,11 @@ class TourBigViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         binding.clTourInfo.setOnClickListener{onItemInfoSelected(tour.id)}
         binding.ivPlayIcon.setOnClickListener{onItemPlaySelected(tour.id)}
-        binding.ivStarIcon.setOnClickListener{onItemFavSelected(tour.id)}
+        binding.ivStarIcon.setOnClickListener{
+            if (!tour.isFavorite) {
+                tour.isFavorite =  true
+                onItemFavSelected(tour.id)
+            }
+        }
     }
 }

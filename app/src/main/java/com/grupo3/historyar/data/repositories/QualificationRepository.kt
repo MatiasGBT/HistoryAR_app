@@ -16,6 +16,7 @@ class QualificationRepository @Inject constructor(
         val commentListModel = qualificationService.getByTourId(idTour)
         val commentList = commentListModel.map {
             val user: User = userRepository.getUserById(it.idUser)
+            user.favoriteTourId = ""
             it.toDomain(user)
         }
         return commentList

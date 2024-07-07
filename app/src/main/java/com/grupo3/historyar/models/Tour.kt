@@ -8,6 +8,6 @@ data class Tour(
     val image: String,
     val latitude: String,
     val longitude: String,
-    val isFavorite: Boolean,
+    var isFavorite: Boolean,
     val points: List<PointOfInterest>
 )

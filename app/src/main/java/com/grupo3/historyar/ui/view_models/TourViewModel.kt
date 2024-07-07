@@ -60,4 +60,10 @@ class TourViewModel @Inject constructor(private val tourRepository: TourReposito
             allToursAreLoading.postValue(false)
         }
     }
+
+    fun setFavoriteTour(idUser: String, idTour: String) {
+        viewModelScope.launch {
+            tourRepository.setFavoriteTour(idUser, idTour)
+        }
+    }
 }

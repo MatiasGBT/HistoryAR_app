@@ -35,6 +35,12 @@ class UserViewModel @Inject constructor(private val userRepository: UserReposito
         }
     }
 
+    fun updateUser(user: User) {
+        viewModelScope.launch {
+            userRepository.updateUser(user)
+        }
+    }
+
     fun deleteUser() {
         viewModelScope.launch {
             userRepository.deleteUser()

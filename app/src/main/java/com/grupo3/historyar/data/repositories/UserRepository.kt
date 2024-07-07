@@ -6,6 +6,7 @@ import com.grupo3.historyar.data.network.api.services.UserService
 import com.grupo3.historyar.data.network.model.toDatabase
 import com.grupo3.historyar.data.network.model.toDomain
 import com.grupo3.historyar.models.User
+import com.grupo3.historyar.models.toDatabase
 import com.grupo3.historyar.models.toModel
 import javax.inject.Inject
 
@@ -29,6 +30,10 @@ class UserRepository @Inject constructor(
         }
         userDao.deleteUser()
         userDao.insertUser(userModel.toDatabase())
+    }
+
+    suspend fun updateUser(user: User) {
+        userDao.updateUser(user.toDatabase())
     }
 
     suspend fun deleteUser() {

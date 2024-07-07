@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -76,17 +77,14 @@ class ProfileFragment() : Fragment() {
             binding.pbTour.isVisible = it
             binding.fcFavoriteTour.isVisible = !it
         }
-        //TODO: Enviar el ID por el favoriteTour del user
-        //TODO: Que el tour favorito sea clickeable
-        //val bundle = bundleOf(ID_BUNDLE to user.favoriteTourId)
-        val bundle = if (user.favoriteTourId.isNotEmpty()) {
-            bundleOf(ID_BUNDLE to user.favoriteTourId)
+        if (user.favoriteTourId.isNotEmpty()) {
+            val bundle = bundleOf(ID_BUNDLE to user.favoriteTourId)
+            childFragmentManager.commit {
+                setReorderingAllowed(true)
+                add<TourProfileFragment>(binding.fcFavoriteTour.id, args = bundle)
+            }
         } else {
-            bundleOf(ID_BUNDLE to "1")
-        }
-        childFragmentManager.commit {
-            setReorderingAllowed(true)
-            add<TourProfileFragment>(binding.fcFavoriteTour.id, args = bundle)
+            binding.tvTour.isGone = true
         }
     }
 
