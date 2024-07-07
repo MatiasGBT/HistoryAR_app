@@ -50,8 +50,8 @@ class CameraFragment : Fragment() {
     private lateinit var arFragment: ArFragment
     private val arSceneView get() = arFragment.arSceneView
     private val scene get() = arSceneView.scene
-    private var model: Renderable? = null
-    private var modelView: ViewRenderable? = null
+    //private var model: Renderable? = null
+    //private var modelView: ViewRenderable? = null
     private lateinit var tour: Tour
     private lateinit var pointList: List<PointOfInterest>
     private var createdPointList: MutableList<PointOfInterest> = emptyList<PointOfInterest>().toMutableList()
@@ -115,24 +115,14 @@ class CameraFragment : Fragment() {
         }
     }
 
-    private suspend fun loadModel() {
-        model = ModelRenderable.builder()
-            .setSource(context, Uri.parse("models/halloween.glb"))
-            .setIsFilamentGltf(true)
-            .await()
-        modelView = ViewRenderable.builder()
-            .setView(context, R.layout.view_renderable_info)
-            .await()
-    }
-
     private suspend fun loadModel(point: PointOfInterest) {
-        model = ModelRenderable.builder()
+        point.modelRenderable = ModelRenderable.builder()
             .setSource(context, Uri.parse(point.model.replace("http://","https://")))
             //.setSource(context, Uri.parse("models/halloween.glb"))
             .setAsyncLoadEnabled(true)
             .setIsFilamentGltf(true)
             .await()
-        modelView = ViewRenderable.builder()
+        point.modelView = ViewRenderable.builder()
             .setView(context, R.layout.view_renderable_info)
             .await()
     }
@@ -141,14 +131,14 @@ class CameraFragment : Fragment() {
         if (!::location.isInitialized || pointList.isEmpty())
             return
 
-        pointList.forEach {
+        for (it in pointList) {
             val pointLocation = Location("Point")
             pointLocation.latitude = it.latitude.toDouble()
             pointLocation.longitude = it.longitude.toDouble()
             val distance = location.distanceTo(pointLocation).roundToInt()
-            Log.i("testDis", distance.toString())
+
             if (distance <= 20 && !createdPointList.contains(it)) {
-                if (model == null || modelView == null) {
+                if (it.modelRenderable == null || it.modelView == null) {
                     Toast.makeText(context, "Cargando modelo...", Toast.LENGTH_SHORT).show()
                     return
                 }
@@ -157,7 +147,7 @@ class CameraFragment : Fragment() {
                 scene.addChild(AnchorNode(hitResult.createAnchor()).apply {
                     // Create the transformable model and add it to the anchor.
                     addChild(TransformableNode(arFragment.transformationSystem).apply {
-                        renderable = model
+                        renderable = it.modelRenderable
                         renderableInstance.setCulling(false)
                         renderableInstance.animate(true).start()
                         localPosition = Vector3(0.0f, 0f, 0.0f)
@@ -170,9 +160,9 @@ class CameraFragment : Fragment() {
                             renderable = modelView
                         })*/
                     })
-                    createdPointList.add(it)
                 })
-                //TODO: Break
+                createdPointList.add(it)
+                break
             }
         }
     }

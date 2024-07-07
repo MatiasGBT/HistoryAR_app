@@ -34,10 +34,10 @@ import com.grupo3.historyar.databinding.FragmentTourPlayBinding
 import com.grupo3.historyar.models.PointOfInterest
 import com.grupo3.historyar.models.Tour
 import com.grupo3.historyar.ui.view_models.RouteViewModel
+import com.grupo3.historyar.ui.view_models.SubscriptionViewModel
 import com.grupo3.historyar.ui.view_models.TourViewModel
 
 //TODO: Que se agreguen las experiencias que se visitan a la lista de vistas previamente
-//TODO: Que no permita al usuario ingresar si no tiene una suscripción activa
 const val ID_BUNDLE = "id_bundle"
 
 class TourPlayFragment : Fragment() {
@@ -47,6 +47,7 @@ class TourPlayFragment : Fragment() {
 
     private val tourViewModel: TourViewModel by activityViewModels()
     private val routeViewModel: RouteViewModel by activityViewModels()
+    private val subscriptionViewModel: SubscriptionViewModel by activityViewModels()
     private var id: String? = null
     private var _binding: FragmentTourPlayBinding? = null
     private val binding get() = _binding!!
@@ -61,8 +62,10 @@ class TourPlayFragment : Fragment() {
         map.setMaxZoomPreference(20F)
         enableGoogleMapLocation()
         getCurrentLocation()
+        observeSubscription()
         observeTour()
         observeRoute()
+        subscriptionViewModel.getUserSubscription()
         tourViewModel.getTour(id!!)
     }
 
@@ -87,6 +90,15 @@ class TourPlayFragment : Fragment() {
     private fun initUI() {
         binding.fabCamera.setOnClickListener {
             navigateToCamera()
+        }
+    }
+
+    private fun observeSubscription() {
+        subscriptionViewModel.subModel.observe(viewLifecycleOwner) {
+            if (!it.isSubValid) {
+                val bundle = bundleOf(com.grupo3.historyar.ui.tour_detail.ID_BUNDLE to id)
+                findNavController().navigate(R.id.action_tourPlayFragment_to_navigation_home, bundle)
+            }
         }
     }
 

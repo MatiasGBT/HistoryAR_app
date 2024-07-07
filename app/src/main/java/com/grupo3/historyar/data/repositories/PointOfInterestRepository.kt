@@ -2,6 +2,7 @@ package com.grupo3.historyar.data.repositories
 
 import com.grupo3.historyar.data.database.dao.PointOfInterestDao
 import com.grupo3.historyar.data.database.entities.PointOfInterestEntity
+import com.grupo3.historyar.data.database.entities.toDomain
 import com.grupo3.historyar.data.network.api.services.PointOfInterestService
 import com.grupo3.historyar.models.PointOfInterest
 import com.grupo3.historyar.models.toDomain

@@ -2,7 +2,6 @@ package com.grupo3.historyar.data.network.api.services
 
 import com.grupo3.historyar.data.network.api.clients.QualificationApiClient
 import com.grupo3.historyar.data.network.model.QualificationModel
-import com.grupo3.historyar.models.Qualification
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -16,15 +15,10 @@ class QualificationService @Inject constructor(private val api: QualificationApi
         }
     }
 
-    suspend fun save(qualification: Qualification) {
-        withContext(Dispatchers.IO) {
-            api.save(qualification)
-        }
-    }
-
-    suspend fun delete(id: String) {
-        withContext(Dispatchers.IO) {
-            api.delete(id)
+    suspend fun save(qualification: QualificationModel): QualificationModel {
+        return withContext(Dispatchers.IO) {
+            val response = api.save(qualification)
+            response.body() ?: QualificationModel()
         }
     }
 }

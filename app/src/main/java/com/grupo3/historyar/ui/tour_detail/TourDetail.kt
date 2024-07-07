@@ -1,7 +1,9 @@
 package com.grupo3.historyar.ui.tour_detail
 
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -32,6 +34,7 @@ class TourDetail : Fragment() {
     private val tourViewModel: TourViewModel by activityViewModels()
     private val qualificationViewModel: QualificationViewModel by activityViewModels()
     private val userViewModel: UserViewModel by activityViewModels()
+    private val subscriptionViewModel: SubscriptionViewModel by activityViewModels()
     private var id: String? = null
     private var _binding: FragmentTourDetailBinding? = null
     private val binding get() = _binding!!
@@ -51,22 +54,33 @@ class TourDetail : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentTourDetailBinding.inflate(inflater, container, false)
         initUI()
         return binding.root
     }
 
     private fun initUI() {
-        //TODO: Obtener calificación del usuario y pintar estrellitas en base a dicha calificación
+        observeSubscription()
         observeTour()
         observeCommentList()
         observeUser()
+        subscriptionViewModel.getUserSubscription()
         tourViewModel.getTour(id!!)
         qualificationViewModel.getQualificationsByTourId(id!!)
         userViewModel.getUserLoggedIn()
         initPlayBtn()
+        initShareBtn()
         initQualificationBtns()
+    }
+
+    private fun observeSubscription() {
+        subscriptionViewModel.subModel.observe(viewLifecycleOwner) {
+            if (!it.isSubValid) {
+                val bundle = bundleOf(ID_BUNDLE to id)
+                findNavController().navigate(R.id.action_tourDetailFragment_to_navigation_home, bundle)
+            }
+        }
     }
 
     private fun observeTour() {
@@ -87,11 +101,15 @@ class TourDetail : Fragment() {
         }
         qualificationViewModel.commentsModel.observe(viewLifecycleOwner) {
             qualifications = it.toMutableList()
-            val qualificationAverage = qualifications.map { qualification -> qualification.score }.average()
-            if (!qualificationAverage.isNaN())
-                paintStarIcons(qualificationAverage.roundToInt())
+            paintQualificationAverage(qualifications)
             initCommentsAdapter(qualifications)
         }
+    }
+
+    private fun paintQualificationAverage(qualifications: List<Qualification>) {
+        val qualificationAverage = qualifications.map { qualification -> qualification.score }.average()
+        if (!qualificationAverage.isNaN())
+            paintStarIcons(qualificationAverage.roundToInt())
     }
 
     private fun observeUser() {
@@ -122,6 +140,18 @@ class TourDetail : Fragment() {
         binding.ivPlay.setOnClickListener {
             val bundle = bundleOf(ID_BUNDLE to id)
             findNavController().navigate(R.id.action_tourDetail_to_tourPlayFragment, bundle)
+        }
+    }
+
+    private fun initShareBtn() {
+        binding.ivShare.setOnClickListener {
+            val url = "https://www.anitmals.com/recorrido_detalle/${tour.id}/"
+            val shareIntent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, "¡Echa un vistazo a este recorrido en HistoryAR!\n$url")
+                type = "text/plain"
+            }
+            startActivity(Intent.createChooser(shareIntent, "Compartir via"))
         }
     }
 
@@ -166,10 +196,10 @@ class TourDetail : Fragment() {
         qualificationBtn.setOnClickListener {
             val comment = getQualificationDialogComment(dialog)
             if (comment.isNotBlank() && comment.isNotEmpty()) {
-                clearStarIcons()
-                paintStarIcons(qualification)
                 dialog.dismiss()
                 createQualification(comment, qualification)
+                clearStarIcons()
+                paintQualificationAverage(qualifications)
             } else {
                 Toast.makeText(requireActivity(), "Deja un comentario para calificar este recorrido", Toast.LENGTH_SHORT).show()
             }
@@ -209,9 +239,9 @@ class TourDetail : Fragment() {
             comment = comment,
             score = qualification
         )
+        qualifications.removeIf { it.user.id == user.id && it.tour == tour.id }
         qualifications = (listOf(qualification) + qualifications).toMutableList()
-        commentAdapter.updateListByPosition(qualifications)
-        //TODO: qualificationViewModel.deleteQualification if exists
+        commentAdapter.updateList(qualifications)
         qualificationViewModel.saveQualification(qualification)
     }
 

@@ -5,8 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.grupo3.historyar.R
 import com.grupo3.historyar.databinding.FragmentTourProfileBinding
 import com.grupo3.historyar.ui.tour_mini.ID_BUNDLE
@@ -34,6 +36,7 @@ class TourProfileFragment : Fragment() {
     ): View {
         _binding = FragmentTourProfileBinding.inflate(inflater, container, false)
         initViewMode()
+        initUI()
         return binding.root
     }
 
@@ -43,6 +46,13 @@ class TourProfileFragment : Fragment() {
             Picasso.get().load(it.image).into(binding.ivTourImage)
         })
         tourViewModel.getTour(id!!)
+    }
+
+    private fun initUI() {
+        binding.cvTour.setOnClickListener {
+            val bundle = bundleOf(ID_BUNDLE to id)
+            findNavController().navigate(R.id.action_navigation_profile_to_tourDetailFragment, bundle)
+        }
     }
 
     override fun onDestroyView() {

@@ -17,11 +17,6 @@ class CommentListAdapter(
         notifyDataSetChanged()
     }
 
-    fun updateListByPosition(qualificationList: List<Qualification>) {
-        this.qualificationList = qualificationList
-        notifyItemInserted(0)
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QualificationViewHolder {
         return QualificationViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.fragment_comment, parent, false)

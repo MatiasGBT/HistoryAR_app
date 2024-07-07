@@ -12,6 +12,9 @@ interface UserApiClient {
     @GET("usuario/usuarios/{id}")
     suspend fun getById(@Path("id") id: String): Response<UserModel>
 
+    @GET("usuario/usuarios/")
+    suspend fun getAll(): Response<List<UserModel>>
+
     @POST("usuario/usuarios/")
     suspend fun saveUser(@Body user: UserModel): Response<UserModel>
 }

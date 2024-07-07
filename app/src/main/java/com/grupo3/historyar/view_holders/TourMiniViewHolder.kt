@@ -12,7 +12,7 @@ class TourMiniViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     fun bind(tour: Tour, onItemSelected: (String) -> Unit) {
         binding.tvTourName.text = tour.name
-        binding.tvTourDuration.text = tour.duration.toString() + " minutos"
+        binding.tvTourDuration.text = tour.duration
         Picasso.get().load(tour.image).into(binding.ivTourImage)
         if (tour.isFavorite) {
             binding.ivStarIcon.setImageResource(R.drawable.ic_round_star_24)

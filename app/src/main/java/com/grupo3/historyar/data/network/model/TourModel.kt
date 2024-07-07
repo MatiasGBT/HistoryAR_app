@@ -8,7 +8,7 @@ data class TourModel(
     @SerializedName("id") val id: String = "",
     @SerializedName("nombre") val name: String = "",
     @SerializedName("descripcion") val description: String = "",
-    @SerializedName("duracion") val duration: Int = 0,
+    @SerializedName("duracion") val duration: String = "",
     @SerializedName("puntoInteres") val pointsOfInterest: List<PointOfInterestModel> = emptyList()
 )
 

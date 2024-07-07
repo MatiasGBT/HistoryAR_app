@@ -1,5 +1,7 @@
 package com.grupo3.historyar.models
 
+import com.google.ar.sceneform.rendering.Renderable
+import com.google.ar.sceneform.rendering.ViewRenderable
 import com.grupo3.historyar.data.database.entities.PointOfInterestEntity
 
 data class PointOfInterest(
@@ -8,7 +10,7 @@ data class PointOfInterest(
     val image: String,
     val latitude: String,
     val longitude: String,
-    val model: String
+    val model: String,
+    var modelRenderable: Renderable? = null,
+    var modelView: ViewRenderable? = null
 )
-
-fun PointOfInterestEntity.toDomain() = PointOfInterest(id = id, name = name, image = image, latitude = latitude, longitude = longitude, model = model)

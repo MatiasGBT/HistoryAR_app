@@ -19,7 +19,7 @@ class TourBigViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         binding.tvTourName.text = tour.name
         binding.tvTourDistance.text = currentUserLocation.distanceTo(destiny).roundToInt().toString() + "m"
-        binding.tvTourDuration.text = tour.duration.toString() + " minutos"
+        binding.tvTourDuration.text = tour.duration
         binding.tvTourDescription.text = tour.description
         Picasso.get().load(tour.image).into(binding.ivTourImage)
         if (tour.isFavorite) {

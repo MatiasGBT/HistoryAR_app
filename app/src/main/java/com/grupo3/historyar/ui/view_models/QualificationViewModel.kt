@@ -34,10 +34,4 @@ class QualificationViewModel @Inject constructor(private val qualificationReposi
             qualificationRepository.saveQualification(qualification)
         }
     }
-
-    fun deleteQualification(qualification: Qualification) {
-        viewModelScope.launch {
-            qualificationRepository.deleteQualification(qualification)
-        }
-    }
 }

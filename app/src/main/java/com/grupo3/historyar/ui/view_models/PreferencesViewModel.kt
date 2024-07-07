@@ -33,7 +33,7 @@ class PreferencesViewModel @Inject constructor(private val preferencesRepository
         preferencesRepository.saveDarkModeSetting(isDarkModeEnabled)
     }
 
-    fun toggleHomeSwipe(isHomeSwipeVisible: Boolean) {
+    private fun toggleHomeSwipe(isHomeSwipeVisible: Boolean) {
         this.isHomeSwipeVisible.postValue(isHomeSwipeVisible)
     }
 

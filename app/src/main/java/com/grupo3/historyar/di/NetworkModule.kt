@@ -3,12 +3,14 @@ package com.grupo3.historyar.di
 import com.grupo3.historyar.data.network.api.clients.QualificationApiClient
 import com.grupo3.historyar.data.network.api.clients.PointOfInterestApiClient
 import com.grupo3.historyar.data.network.api.clients.RouteApiClient
+import com.grupo3.historyar.data.network.api.clients.SubscriptionApiClient
 import com.grupo3.historyar.data.network.api.clients.TourApiClient
 import com.grupo3.historyar.data.network.api.clients.UserApiClient
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -17,12 +19,17 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
     private var routeApiRetrofit: Retrofit? = null
+    private val okHttpClient = OkHttpClient.Builder()
+        .followRedirects(true)
+        .followSslRedirects(true)
+        .build()
 
     @Singleton
     @Provides
     fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("http://tesis-web.onrender.com/api/")
+            .baseUrl("https://tesis-web.onrender.com/api/")
+            .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
@@ -49,6 +56,12 @@ object NetworkModule {
     @Provides
     fun provideQualificationApiClient(retrofit: Retrofit): QualificationApiClient {
         return retrofit.create(QualificationApiClient::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideQSubscriptionApiClient(retrofit: Retrofit): SubscriptionApiClient {
+        return retrofit.create(SubscriptionApiClient::class.java)
     }
 
     @Singleton

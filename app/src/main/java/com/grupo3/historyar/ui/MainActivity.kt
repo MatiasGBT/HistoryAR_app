@@ -1,8 +1,8 @@
 package com.grupo3.historyar.ui
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.*
 import com.google.firebase.auth.FirebaseAuth
 import com.grupo3.historyar.databinding.ActivityMainBinding
@@ -22,6 +22,27 @@ class MainActivity : AppCompatActivity() {
             navigateToAppActivity()
         else
             navigateToLoginActivity()
+        handleIntent(intent)
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        handleIntent(intent)
+    }
+
+    private fun handleIntent(intent: Intent) {
+        if (!isUserLoggedIn())
+            navigateToLoginActivity()
+        /*if (intent.action == Intent.ACTION_VIEW) {
+            val data: Uri? = intent.data
+            data?.let {
+                val tourId = it.lastPathSegment
+                if (tourId != null) {
+                    navigateToAppActivity(tourId)
+                }
+            }
+        }*/
     }
 
     private fun isUserLoggedIn(): Boolean {
@@ -29,8 +50,10 @@ class MainActivity : AppCompatActivity() {
         return currentUser != null
     }
 
-    private fun navigateToAppActivity() {
+    private fun navigateToAppActivity(tourId: String? = null) {
         val intent = Intent(this, AppActivity::class.java)
+        if (tourId != null)
+            intent.putExtra("tour_id", tourId)
         startActivity(intent)
     }
 

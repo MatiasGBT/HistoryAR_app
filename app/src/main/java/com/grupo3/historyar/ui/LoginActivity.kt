@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -41,6 +42,10 @@ class LoginActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         initUI()
         initGoogleOptions()
+        userViewModel.userIsSaved.observe(this, Observer {
+            if (it)
+                navigateToAppActivity()
+        })
     }
 
     override fun onBackPressed() {
@@ -77,7 +82,6 @@ class LoginActivity : AppCompatActivity() {
         auth.signInWithCredential(credential).addOnCompleteListener {
             if (it.isSuccessful) {
                 userViewModel.saveUser(account.toDomain())
-                navigateToAppActivity()
             } else {
                 Toast.makeText(this, it.exception.toString(), Toast.LENGTH_SHORT).show()
             }

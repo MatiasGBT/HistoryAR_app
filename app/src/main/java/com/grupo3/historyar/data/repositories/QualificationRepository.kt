@@ -1,13 +1,10 @@
 package com.grupo3.historyar.data.repositories
 
 import com.grupo3.historyar.data.network.api.services.QualificationService
-import com.grupo3.historyar.data.network.model.QualificationModel
-import com.grupo3.historyar.data.network.model.PointOfInterestModel
-import com.grupo3.historyar.data.network.model.TourModel
-import com.grupo3.historyar.data.network.model.UserModel
 import com.grupo3.historyar.data.network.model.toDomain
 import com.grupo3.historyar.models.Qualification
 import com.grupo3.historyar.models.User
+import com.grupo3.historyar.models.toModel
 import javax.inject.Inject
 
 class QualificationRepository @Inject constructor(
@@ -25,10 +22,6 @@ class QualificationRepository @Inject constructor(
     }
 
     suspend fun saveQualification(qualification: Qualification) {
-        qualificationService.save(qualification)
-    }
-
-    suspend fun deleteQualification(qualification: Qualification) {
-        qualificationService.delete(qualification.id)
+        qualificationService.save(qualification.toModel())
     }
 }

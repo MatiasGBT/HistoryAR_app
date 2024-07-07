@@ -14,8 +14,8 @@
             android:id="@+id/action_navigation_home_to_tourListFragment"
             app:destination="@id/tourListFragment" />
         <action
-            android:id="@+id/action_navigation_home_to_tourDetail"
-            app:destination="@id/tourDetail" />
+            android:id="@+id/action_navigation_home_to_tourDetailFragment"
+            app:destination="@id/tourDetailFragment" />
         <action
             android:id="@+id/action_navigation_home_to_tourPlayFragment"
             app:destination="@id/tourPlayFragment" />
@@ -25,7 +25,11 @@
         android:id="@+id/navigation_profile"
         android:name="com.grupo3.historyar.ui.profile.ProfileFragment"
         android:label="@string/title_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_navigation_profile_to_tourDetailFragment"
+            app:destination="@id/tourDetailFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/tourListFragment"
@@ -33,21 +37,26 @@
         android:label="fragment_tour_list"
         tools:layout="@layout/fragment_tour_list" >
         <action
-            android:id="@+id/action_tourListFragment_to_tourDetail"
-            app:destination="@id/tourDetail" />
+            android:id="@+id/action_tourListFragment_to_tourDetailFragment"
+            app:destination="@id/tourDetailFragment" />
         <action
             android:id="@+id/action_tourListFragment_to_tourPlayFragment"
             app:destination="@id/tourPlayFragment" />
     </fragment>
+
     <fragment
-        android:id="@+id/tourDetail"
+        android:id="@+id/tourDetailFragment"
         android:name="com.grupo3.historyar.ui.tour_detail.TourDetail"
         android:label="fragment_tour_detail"
         tools:layout="@layout/fragment_tour_detail" >
         <action
             android:id="@+id/action_tourDetail_to_tourPlayFragment"
             app:destination="@id/tourPlayFragment" />
+        <action
+            android:id="@+id/action_tourDetailFragment_to_navigation_home"
+            app:destination="@id/navigation_home" />
     </fragment>
+
     <fragment
         android:id="@+id/tourPlayFragment"
         android:name="com.grupo3.historyar.ui.tour_play.TourPlayFragment"
@@ -56,11 +65,14 @@
         <action
             android:id="@+id/action_tourPlayFragment_to_cameraFragment"
             app:destination="@id/cameraFragment" />
+        <action
+            android:id="@+id/action_tourPlayFragment_to_navigation_home"
+            app:destination="@id/navigation_home" />
     </fragment>
+
     <fragment
         android:id="@+id/cameraFragment"
         android:name="com.grupo3.historyar.ui.camera.CameraFragment"
         android:label="fragment_camera"
         tools:layout="@layout/fragment_camera" />
-
 </navigation>

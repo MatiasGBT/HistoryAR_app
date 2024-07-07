@@ -117,7 +117,7 @@ class TourListFragment : Fragment() {
 
     private fun navigateToTourDetail(id: String) {
         val bundle = bundleOf(ID_BUNDLE to id)
-        findNavController().navigate(R.id.action_tourListFragment_to_tourDetail, bundle)
+        findNavController().navigate(R.id.action_tourListFragment_to_tourDetailFragment, bundle)
     }
 
     private fun navigateToTourPlay(id: String) {

@@ -30,15 +30,7 @@ class MiniPointOfInterestFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMiniPointOfInterestBinding.inflate(inflater, container, false)
-        //initViewMode()
         return binding.root
-    }
-
-    private fun initViewMode() {
-        pointViewModel.pointModel.observe(viewLifecycleOwner) {
-            binding.tvPointName.text = it.name
-        }
-        pointViewModel.getPoint(ID_BUNDLE)
     }
 
     override fun onDestroyView() {

@@ -12,6 +12,7 @@ import javax.inject.Inject
 @HiltViewModel
 class UserViewModel @Inject constructor(private val userRepository: UserRepository): ViewModel() {
     val userModel = MutableLiveData<User>()
+    val userIsSaved = MutableLiveData<Boolean>()
 
     fun getUserLoggedIn() {
         viewModelScope.launch {
@@ -30,6 +31,7 @@ class UserViewModel @Inject constructor(private val userRepository: UserReposito
     fun saveUser(user: User) {
         viewModelScope.launch {
             userRepository.saveUser(user)
+            userIsSaved.postValue(true)
         }
     }
 
