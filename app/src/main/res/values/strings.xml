@@ -9,12 +9,12 @@
 
     <!--Home-->
     <string name="home_no_geolocalization">No se pudo obtener la ubicación del usuario. Por favor, acepte los permisos y vuelva a intentar.</string>
-    <string name="home_no_close_experiences">No hay experiencias cerca tuyo. Prueba viendo todas las experiencias que tenemos para ofrecer.</string>
+    <string name="home_no_close_experiences">No hay experiencias cerca tuyo. Proba viendo todas las experiencias que tenemos para ofrecer.</string>
     <string name="home_close_experiences">Experiencias cerca tuyo</string>
     <string name="home_btn_more_experiences">Ver todas las experiencias</string>
     <string name="home_no_previous_experiences">Todavía no realizaste ningun recorrido, ¿qué esperas para empezar 😉?</string>
     <string name="home_previous_experiences">Tus viajes por la historia</string>
-    <string name="home_btn_sub">Suscribirme por $100 ARS</string>
+    <string name="home_btn_sub">Suscribirme por $9185 ARS</string>
     <string name="home_btn_support">Necesito ayuda</string>
     <string name="home_sub">No tenés una suscripción activa</string>
 
@@ -36,6 +36,4 @@
 
     <!--Google Maps-->
     <string name="google_maps_key">AIzaSyDkQZKNSGt831GkyfCvNjHa5s7zKc8NONE</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

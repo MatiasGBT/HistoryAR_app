@@ -28,11 +28,10 @@ class SubscriptionFragment : Fragment() {
     }
 
     private fun initViewModel() {
-        //TODO: Obtener datos de suscripción y mostrarlos debidamente. Filtrar por fecha
         subscriptionViewModel.subModel.observe(viewLifecycleOwner) {
             if (it.id != "" && it.isSubValid) {
                 binding.btnSub.isVisible = false
-                binding.tvSubStatus.text = "Tu suscripción esta activa, ¿qué esperas para darte un paseo 🚶‍♂️"
+                binding.tvSubStatus.text = "Tu suscripción esta activa, ¿qué esperas para darte un paseo 🚶‍♂️ ?"
                 binding.tvSubUntil.isVisible = true
                 binding.tvSubUntil.text = "Te quedan ${it.daysUntilMonth} días de suscripción"
             }

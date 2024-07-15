@@ -1,7 +1,6 @@
 package com.grupo3.historyar.models
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.firebase.auth.FirebaseAuth
 import com.grupo3.historyar.data.database.entities.UserEntity
 import com.grupo3.historyar.data.network.model.UserModel
 
@@ -11,7 +10,8 @@ data class User(
     val fullName: String = "",
     val email: String = "",
     var favoriteTourId: String = "",
-    val lastTourIds: List<String> = listOf("1", "2", "3")
+    var lastTourIds: List<String> = emptyList(),
+    var isActive: Boolean = true
 )
 
 fun User.toModel() = UserModel(
@@ -19,7 +19,8 @@ fun User.toModel() = UserModel(
     photo = photo,
     fullName = fullName,
     email = email,
-    lastTourIds = lastTourIds.first()
+    isActive = isActive
+    //lastTourIds = lastTourIds?.last() ?: ""
 )
 
 fun User.toDatabase() = UserEntity(
@@ -36,11 +37,4 @@ fun GoogleSignInAccount.toDomain() = User(
     photo = photoUrl.toString(),
     fullName = displayName.orEmpty(),
     email = email.orEmpty()
-)
-
-fun FirebaseAuth.toModel() = User (
-    id = "",
-    photo = currentUser?.photoUrl?.toString() ?: "",
-    fullName = currentUser?.displayName ?: "",
-    email = currentUser?.email ?: ""
 )

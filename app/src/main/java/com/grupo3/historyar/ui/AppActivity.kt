@@ -33,8 +33,6 @@ class AppActivity : AppCompatActivity() {
         setContentView(binding.root)
         observeDarkMode()
         preferencesViewModel.initPreferences()
-        initActionBar()
-        initNavbar()
         handleIntent(intent)
     }
 
@@ -75,6 +73,8 @@ class AppActivity : AppCompatActivity() {
     private fun observeDarkMode() {
         preferencesViewModel.isDarkModeEnabled.observe(this) {
             toggleDarkMode(it)
+            initActionBar()
+            initNavbar()
         }
     }
 

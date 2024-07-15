@@ -17,4 +17,3 @@ data class UserEntity(
 )
 
 fun UserEntity.toDomain() = User(id = id, photo = photo, fullName = fullName, email = email, favoriteTourId = favoriteTourId.orEmpty(), lastTourIds = lastTourIds.orEmpty())
-//fun GoogleSignInAccount.toDatabase() = UserEntity(id = id.orEmpty(), photo = photoUrl.toString(), fullName = displayName.orEmpty())

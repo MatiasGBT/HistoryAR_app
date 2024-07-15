@@ -1,7 +1,6 @@
 package com.grupo3.historyar.view_holders
 
 import android.location.Location
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.grupo3.historyar.R

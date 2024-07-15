@@ -23,13 +23,13 @@ class UserRepository @Inject constructor(
         return userService.getUserById(idUser).toDomain()
     }
 
-    suspend fun saveUser(user: User) {
-        var userModel = userService.getUserById(user.id)
-        if (userModel.id.isEmpty()) {
-            userModel = userService.saveUser(user.toModel())
+    suspend fun saveUser(user: User): User {
+        val userModel = userService.saveUser(user.toModel())
+        if (userModel.isActive) {
+            userDao.deleteUser()
+            userDao.insertUser(userModel.toDatabase())
         }
-        userDao.deleteUser()
-        userDao.insertUser(userModel.toDatabase())
+        return userModel.toDomain()
     }
 
     suspend fun updateUser(user: User) {
@@ -38,5 +38,9 @@ class UserRepository @Inject constructor(
 
     suspend fun deleteUser() {
         userDao.deleteUser()
+    }
+
+    suspend fun updateUserState(idUser: String, userState: Boolean) {
+        userService.updateUserState(idUser, userState)
     }
 }

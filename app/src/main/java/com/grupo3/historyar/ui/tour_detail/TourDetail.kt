@@ -77,6 +77,7 @@ class TourDetail : Fragment() {
     private fun observeSubscription() {
         subscriptionViewModel.subModel.observe(viewLifecycleOwner) {
             if (!it.isSubValid) {
+                Toast.makeText(context, "No podes acceder a este contenido sin una suscripción", Toast.LENGTH_LONG).show()
                 val bundle = bundleOf(ID_BUNDLE to id)
                 findNavController().navigate(R.id.action_tourDetailFragment_to_navigation_home, bundle)
             }

@@ -45,6 +45,10 @@ class LoginActivity : AppCompatActivity() {
         userViewModel.userIsSaved.observe(this, Observer {
             if (it)
                 navigateToAppActivity()
+            else {
+                auth.signOut()
+                Toast.makeText(this, "Esta cuenta esta inactiva. Por favor, comunicate con el soporte para reactivarla", Toast.LENGTH_SHORT).show()
+            }
         })
     }
 

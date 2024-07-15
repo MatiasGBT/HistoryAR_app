@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -38,7 +39,7 @@ class TourListFragment : Fragment() {
         if (isGranted) {
             getLastLocation()
         } else {
-            //TODO: Añadir una pantalla que le indique al usuario que los permisos son obligatorios
+            Toast.makeText(context, "El permiso es obligatorio. Por favor, activalo en Ajustes", Toast.LENGTH_LONG).show()
         }
     }
 
@@ -79,7 +80,7 @@ class TourListFragment : Fragment() {
             .addOnSuccessListener { location: Location? ->
                 if (location == null) {
                     Log.i("test", "No current location.")
-                    //TODO: Mostrar texto de que no se pudo obtener la ubicación
+                    Toast.makeText(context, "No se pudo obtener la localización. Por favor, reinicia la aplicación", Toast.LENGTH_LONG).show()
                 } else {
                     initAllTours(location)
                 }

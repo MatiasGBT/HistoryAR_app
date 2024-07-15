@@ -21,17 +21,13 @@ class UserViewModel @Inject constructor(private val userRepository: UserReposito
         }
     }
 
-    fun getUserById(idUser: String) {
-        viewModelScope.launch {
-            val user = userRepository.getUserById(idUser)
-            userModel.postValue(user)
-        }
-    }
-
     fun saveUser(user: User) {
         viewModelScope.launch {
-            userRepository.saveUser(user)
-            userIsSaved.postValue(true)
+            val user = userRepository.saveUser(user)
+            if (user.isActive)
+                userIsSaved.postValue(true)
+            else
+                userIsSaved.postValue(false)
         }
     }
 
@@ -44,6 +40,12 @@ class UserViewModel @Inject constructor(private val userRepository: UserReposito
     fun deleteUser() {
         viewModelScope.launch {
             userRepository.deleteUser()
+        }
+    }
+
+    fun updateUserState(idUser: String, userState: Boolean) {
+        viewModelScope.launch {
+            userRepository.updateUserState(idUser, userState)
         }
     }
 }

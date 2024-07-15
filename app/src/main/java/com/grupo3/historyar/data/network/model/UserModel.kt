@@ -10,14 +10,17 @@ data class UserModel(
     @SerializedName("nombre") val fullName: String = "",
     @SerializedName("email") val email: String = "",
     @SerializedName("recorridoFavorito") val favoriteTourId: String? = "",
-    @SerializedName("ultimosRecorridos") val lastTourIds: String = ""
+    @SerializedName("ultimosRecorridos") var lastTourIds: String = "",
+    @SerializedName("activo") var isActive: Boolean = true
 )
 
 fun UserModel.toDomain() = User(
     id = id,
     photo = photo,
     fullName = fullName,
-    favoriteTourId = favoriteTourId ?: ""
+    favoriteTourId = favoriteTourId ?: "",
+    lastTourIds = listOf(lastTourIds),
+    isActive = isActive
 )
 
 fun UserModel.toDatabase() = UserEntity(

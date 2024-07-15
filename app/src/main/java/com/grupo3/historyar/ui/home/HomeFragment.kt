@@ -117,6 +117,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun initCloseExperiences(location: Location) {
+        Log.i("HistoryAR.debug", location.toString())
         initCloseExperiencesAdapter(location)
         observeCloseExperiencesMutableData()
         tourViewModel.getCloseExperiences(location.latitude, location.longitude)
@@ -133,6 +134,7 @@ class HomeFragment : Fragment() {
             onFavSelected = { setFavoriteTour(it) },
             currentUserLocation = location
         )
+        Log.i("HistoryAR.debug", closeExperiencesAdapter.toString())
         binding.rvCloseExperiences.setHasFixedSize(true)
         binding.rvCloseExperiences.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -146,6 +148,7 @@ class HomeFragment : Fragment() {
         }
         tourViewModel.closeExperiencesModel.observe(viewLifecycleOwner) {
             if (it.isNotEmpty()) {
+                Log.i("HistoryAR.debug", it.toString())
                 closeExperiencesAdapter.updateList(it)
                 binding.tvNoGeo.isVisible = false
             } else {
@@ -183,10 +186,12 @@ class HomeFragment : Fragment() {
     }
 
     private fun initUser() {
-        userViewModel.userModel.observe(viewLifecycleOwner, Observer {
+        userViewModel.userModel.observe(viewLifecycleOwner) {
+            if (it.lastTourIds.contains("null"))
+                it.lastTourIds = emptyList()
             initPreviousExperiences(it.lastTourIds)
             currentUser = it
-        })
+        }
         userViewModel.getUserLoggedIn()
     }
 
@@ -208,16 +213,16 @@ class HomeFragment : Fragment() {
     }
 
     private fun observePreviousExperiencesMutableData() {
-        tourViewModel.previousExperiencesAreLoading.observe(viewLifecycleOwner, Observer {
+        tourViewModel.previousExperiencesAreLoading.observe(viewLifecycleOwner) {
             binding.pbPreviousExperiences.isVisible = it
             binding.rvPreviousExperiences.isVisible = !it
-        })
-        tourViewModel.previousExperiencesModel.observe(viewLifecycleOwner, Observer {
+        }
+        tourViewModel.previousExperiencesModel.observe(viewLifecycleOwner) {
             if (it.isNotEmpty())
                 previousExperiencesAdapter.updateList(it)
             else
                 showNoPreviousExperiences()
-        })
+        }
     }
 
     private fun showNoPreviousExperiences() {

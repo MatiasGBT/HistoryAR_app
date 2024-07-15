@@ -35,6 +35,7 @@ class ProfileFragment() : Fragment() {
     private lateinit var auth : FirebaseAuth
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
+    private lateinit var currentUser : User
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,11 +57,19 @@ class ProfileFragment() : Fragment() {
             }
         }
         binding.btnLogout.setOnClickListener {
-            auth.signOut()
-            userViewModel.deleteUser()
-            startActivity(Intent(this.activity, LoginActivity::class.java))
+            logOut()
+        }
+        binding.btnDeleteAccount.setOnClickListener {
+            userViewModel.updateUserState(currentUser.id, false)
+            logOut()
         }
         initUser()
+    }
+
+    private fun logOut() {
+        auth.signOut()
+        userViewModel.deleteUser()
+        startActivity(Intent(this.activity, LoginActivity::class.java))
     }
 
     private fun initUser() {
@@ -69,6 +78,7 @@ class ProfileFragment() : Fragment() {
                 Picasso.get().load(it.photo).into(binding.ivAccountImage)
             binding.tvUsername.text = it.fullName
             initFavoriteTourFragment(it)
+            currentUser = it
         }
     }
 

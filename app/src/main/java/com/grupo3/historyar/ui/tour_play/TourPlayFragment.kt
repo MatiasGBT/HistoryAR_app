@@ -8,6 +8,7 @@ import android.location.Location
 import androidx.fragment.app.Fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,8 +37,8 @@ import com.grupo3.historyar.models.Tour
 import com.grupo3.historyar.ui.view_models.RouteViewModel
 import com.grupo3.historyar.ui.view_models.SubscriptionViewModel
 import com.grupo3.historyar.ui.view_models.TourViewModel
+import com.grupo3.historyar.ui.view_models.UserViewModel
 
-//TODO: Que se agreguen las experiencias que se visitan a la lista de vistas previamente
 const val ID_BUNDLE = "id_bundle"
 
 class TourPlayFragment : Fragment() {
@@ -47,6 +48,7 @@ class TourPlayFragment : Fragment() {
 
     private val tourViewModel: TourViewModel by activityViewModels()
     private val routeViewModel: RouteViewModel by activityViewModels()
+    private val userViewModel: UserViewModel by activityViewModels()
     private val subscriptionViewModel: SubscriptionViewModel by activityViewModels()
     private var id: String? = null
     private var _binding: FragmentTourPlayBinding? = null
@@ -61,12 +63,9 @@ class TourPlayFragment : Fragment() {
         map.setMinZoomPreference(15F)
         map.setMaxZoomPreference(20F)
         enableGoogleMapLocation()
-        getCurrentLocation()
         observeSubscription()
-        observeTour()
         observeRoute()
         subscriptionViewModel.getUserSubscription()
-        tourViewModel.getTour(id!!)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -96,8 +95,13 @@ class TourPlayFragment : Fragment() {
     private fun observeSubscription() {
         subscriptionViewModel.subModel.observe(viewLifecycleOwner) {
             if (!it.isSubValid) {
+                Toast.makeText(context, "No podes acceder a este contenido sin una suscripción", Toast.LENGTH_LONG).show()
                 val bundle = bundleOf(com.grupo3.historyar.ui.tour_detail.ID_BUNDLE to id)
                 findNavController().navigate(R.id.action_tourPlayFragment_to_navigation_home, bundle)
+            } else {
+                observeTour()
+                observeUser()
+                tourViewModel.getTour(id!!)
             }
         }
     }
@@ -107,6 +111,19 @@ class TourPlayFragment : Fragment() {
             tour = it
             binding.tvTourName.text = tour.name
             initPointList(tour.points)
+            userViewModel.getUserLoggedIn()
+            getCurrentLocation()
+        }
+    }
+
+    private fun observeUser() {
+        userViewModel.userModel.observe(viewLifecycleOwner) {
+            if (this::tour.isInitialized && !it.lastTourIds.contains(tour.id)) {
+                val list = it.lastTourIds.toMutableList()
+                list.add(tour.id)
+                it.lastTourIds = list
+                userViewModel.updateUser(it)
+            }
         }
     }
 
