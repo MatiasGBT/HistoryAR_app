@@ -134,7 +134,6 @@ class HomeFragment : Fragment() {
             onFavSelected = { setFavoriteTour(it) },
             currentUserLocation = location
         )
-        Log.i("HistoryAR.debug", closeExperiencesAdapter.toString())
         binding.rvCloseExperiences.setHasFixedSize(true)
         binding.rvCloseExperiences.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -148,7 +147,6 @@ class HomeFragment : Fragment() {
         }
         tourViewModel.closeExperiencesModel.observe(viewLifecycleOwner) {
             if (it.isNotEmpty()) {
-                Log.i("HistoryAR.debug", it.toString())
                 closeExperiencesAdapter.updateList(it)
                 binding.tvNoGeo.isVisible = false
             } else {

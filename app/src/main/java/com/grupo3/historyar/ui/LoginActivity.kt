@@ -3,6 +3,7 @@ package com.grupo3.historyar.ui
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -82,6 +83,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setFirebaseUser(account: GoogleSignInAccount) {
+        Log.i("test_user", account.toDomain().toString())
         val credential = GoogleAuthProvider.getCredential(account.idToken , null)
         auth.signInWithCredential(credential).addOnCompleteListener {
             if (it.isSuccessful) {

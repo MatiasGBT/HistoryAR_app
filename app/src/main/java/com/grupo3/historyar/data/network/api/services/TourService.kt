@@ -1,5 +1,6 @@
 package com.grupo3.historyar.data.network.api.services
 
+import android.util.Log
 import com.grupo3.historyar.data.network.api.clients.TourApiClient
 import com.grupo3.historyar.data.network.model.FavoriteTourModel
 import com.grupo3.historyar.data.network.model.TourModel
@@ -34,8 +35,12 @@ class TourService @Inject constructor(private val api: TourApiClient, private va
 
     suspend fun getPreviousExperiences(lastTourIds: List<String>): List<TourModel> {
         return withContext(Dispatchers.IO) {
-            val previousExperiences: List<TourModel> = lastTourIds.map {
-                api.getById(it).body()!!
+            var previousExperiences: List<TourModel> = emptyList()
+            Log.i("test_last", lastTourIds.toString())
+            if (lastTourIds.isNotEmpty() && !lastTourIds.contains("")) {
+                previousExperiences = lastTourIds.map {
+                    api.getById(it).body()!!
+                }
             }
             val responseFavorite = api.getFavoriteUserTour(userRepository.getCurrentUser().id)
             previousExperiences.forEach {
