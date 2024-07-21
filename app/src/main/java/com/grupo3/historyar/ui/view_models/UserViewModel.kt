@@ -23,8 +23,8 @@ class UserViewModel @Inject constructor(private val userRepository: UserReposito
 
     fun saveUser(user: User) {
         viewModelScope.launch {
-            val user = userRepository.saveUser(user)
-            if (user.isActive)
+            val savedUser = userRepository.saveUser(user)
+            if (savedUser.isActive)
                 userIsSaved.postValue(true)
             else
                 userIsSaved.postValue(false)

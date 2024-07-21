@@ -11,7 +11,6 @@ import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -28,12 +27,14 @@ import com.grupo3.historyar.R
 import com.grupo3.historyar.adapters.CloseExperiencesAdapter
 import com.grupo3.historyar.adapters.PreviousExperiencesAdapter
 import com.grupo3.historyar.databinding.FragmentHomeBinding
+import com.grupo3.historyar.models.Tour
 import com.grupo3.historyar.models.User
 import com.grupo3.historyar.ui.tour_mini.ID_BUNDLE
 import com.grupo3.historyar.ui.view_models.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.internal.filterList
 
 class HomeFragment : Fragment() {
     private val preferencesViewModel: PreferencesViewModel by activityViewModels()
@@ -121,7 +122,6 @@ class HomeFragment : Fragment() {
         initCloseExperiencesAdapter(location)
         observeCloseExperiencesMutableData()
         tourViewModel.getCloseExperiences(location.latitude, location.longitude)
-        initHomeSwipeGif()
         binding.btnMoreExperiences.setOnClickListener {
             findNavController().navigate(R.id.action_navigation_home_to_tourListFragment)
         }
@@ -149,6 +149,10 @@ class HomeFragment : Fragment() {
             if (it.isNotEmpty()) {
                 closeExperiencesAdapter.updateList(it)
                 binding.tvNoGeo.isVisible = false
+                if (it.size > 1)
+                    initHomeSwipeGif()
+                else
+                    binding.gviSwipe.isVisible = false
             } else {
                 showNoCloseExperiences()
             }
@@ -184,11 +188,12 @@ class HomeFragment : Fragment() {
     }
 
     private fun initUser() {
-        userViewModel.userModel.observe(viewLifecycleOwner) {
-            if (it.lastTourIds.contains("null"))
-                it.lastTourIds = emptyList()
-            initPreviousExperiences(it.lastTourIds)
-            currentUser = it
+        userViewModel.userModel.observe(viewLifecycleOwner) { user: User ->
+            val filteredTourIdsList = user.lastTourIds.filter { it != "null" }
+            user.lastTourIds = filteredTourIdsList
+            Log.i("test_last_core", user.lastTourIds.toString())
+            initPreviousExperiences(filteredTourIdsList)
+            currentUser = user
         }
         userViewModel.getUserLoggedIn()
     }

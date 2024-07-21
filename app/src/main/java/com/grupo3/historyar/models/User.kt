@@ -20,7 +20,6 @@ fun User.toModel() = UserModel(
     fullName = fullName,
     email = email,
     isActive = isActive
-    //lastTourIds = lastTourIds?.last() ?: ""
 )
 
 fun User.toDatabase() = UserEntity(

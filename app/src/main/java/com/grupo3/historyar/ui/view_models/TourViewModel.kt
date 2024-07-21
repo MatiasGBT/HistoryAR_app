@@ -3,7 +3,6 @@ package com.grupo3.historyar.ui.view_models
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.grupo3.historyar.data.repositories.PreferencesRepository
 import com.grupo3.historyar.data.repositories.TourRepository
 import com.grupo3.historyar.models.Tour
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -43,11 +42,7 @@ class TourViewModel @Inject constructor(private val tourRepository: TourReposito
         viewModelScope.launch {
             previousExperiencesAreLoading.postValue(true)
             val tourList = tourRepository.getPreviousExperiences(lastTourIds)
-            if (tourList != null) {
-                previousExperiencesModel.postValue(tourList!!)
-            } else {
-                previousExperiencesModel.postValue(emptyList())
-            }
+            previousExperiencesModel.postValue(tourList)
             previousExperiencesAreLoading.postValue(false)
         }
     }

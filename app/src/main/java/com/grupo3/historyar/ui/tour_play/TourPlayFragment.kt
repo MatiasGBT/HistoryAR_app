@@ -57,6 +57,7 @@ class TourPlayFragment : Fragment() {
     private lateinit var tour: Tour
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var pointList: List<PointOfInterest>
+    private var userIsNotified = false
 
     private val mapReadyCallback = OnMapReadyCallback { googleMap ->
         map = googleMap
@@ -110,6 +111,7 @@ class TourPlayFragment : Fragment() {
         tourViewModel.tourModel.observe(viewLifecycleOwner) {
             tour = it
             binding.tvTourName.text = tour.name
+            clearMap()
             initPointList(tour.points)
             userViewModel.getUserLoggedIn()
             getCurrentLocation()
@@ -247,8 +249,17 @@ class TourPlayFragment : Fragment() {
     //TODO: Reemplazar RouteModel por su contraparte en modelo estandar
     private fun drawRouteBetweenPoints(route: RouteModel) {
         val polylineOptions = PolylineOptions()
-        route.features.first().geometry.coordinates.forEach {
-            polylineOptions.add(LatLng(it[1], it[0]))
+        if (route.features.isNotEmpty()) {
+            route.features.first().geometry.coordinates.forEach {
+                polylineOptions.add(LatLng(it[1], it[0]))
+            }
+        } else if(!userIsNotified) {
+            Toast.makeText(
+                requireActivity(),
+                "No se pudo generar la ruta, el usuario se encuentra muy lejos del recorrido",
+                Toast.LENGTH_LONG
+            ).show()
+            userIsNotified = true
         }
         polylineOptions.color(Color.BLUE)
         map.addPolyline(polylineOptions)
@@ -265,5 +276,15 @@ class TourPlayFragment : Fragment() {
                 Toast.LENGTH_SHORT
             ).show()
         }
+    }
+
+    private fun clearMap() {
+        if (::map.isInitialized) {
+            map.clear()
+        }
+        if (::pointList.isInitialized) {
+            pointList = emptyList()
+        }
+        userIsNotified = false
     }
 }
