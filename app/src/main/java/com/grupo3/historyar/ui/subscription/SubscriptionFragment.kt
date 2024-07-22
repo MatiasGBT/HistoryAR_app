@@ -1,6 +1,7 @@
 package com.grupo3.historyar.ui.subscription
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -41,9 +42,20 @@ class SubscriptionFragment : Fragment() {
 
     private fun initUI() {
         binding.btnSub.setOnClickListener {
-            val intent = Intent(activity, SubActivity::class.java)
-            startActivity(intent)
+            //navigateToWebViewActivity()
+            openSubscriptionPage()
         }
+    }
+
+    private fun navigateToWebViewActivity() {
+        val intent = Intent(activity, SubActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun openSubscriptionPage() {
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.data = Uri.parse("https://www.anitmals.com/suscribirse/")
+        startActivity(intent)
     }
 
     override fun onDestroyView() {
